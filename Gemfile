@@ -15,6 +15,7 @@ gem 'koala'
 gem 'haml'
 gem 'carrierwave'
 gem 'heroku'
+gem 'pg'
 
 group :development do
   gem 'mysql'
