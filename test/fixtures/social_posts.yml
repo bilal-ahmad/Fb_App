@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  link: MyString
+  picture: MyString
+  caption: MyString
+  description: MyString
+  message: MyString
+  wall_post: MyString
+  status_update: MyString
+  chatt_message: MyString
+  photo_message: MyString
+  photo_path: MyString
+
+two:
+  name: MyString
+  link: MyString
+  picture: MyString
+  caption: MyString
+  description: MyString
+  message: MyString
+  wall_post: MyString
+  status_update: MyString
+  chatt_message: MyString
+  photo_message: MyString
+  photo_path: MyString

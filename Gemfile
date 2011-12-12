@@ -5,8 +5,24 @@ gem 'rails', '3.1.0'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+#gem 'sqlite3'
 
+gem 'devise'
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
+gem 'nifty-generators'
+gem 'koala'
+gem 'haml'
+gem 'carrierwave'
+gem 'heroku'
+
+group :development do
+  gem 'mysql'
+end
+
+group :production do
+  gem "pg"
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -15,6 +31,7 @@ group :assets do
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
 end
+
 
 gem 'jquery-rails'
 
@@ -31,3 +48,4 @@ group :test do
   # Pretty printed test output
   gem 'turn', :require => false
 end
+gem "mocha", :group => :test

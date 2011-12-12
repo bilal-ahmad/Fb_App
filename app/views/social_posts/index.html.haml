@@ -1,0 +1,40 @@
+.page.page_post
+  #primary
+    .text
+      %h1 Applications
+      %br/
+      =# link_to 'Create Post  |', new_social_post_path
+      = link_to 'Create Photo Post  |', new_photo_post_path
+      = link_to 'Create Post', new_post_path
+      %table.posts
+        %tr
+          %th Name
+          %th Link
+          %th Picture
+          %th Caption
+          %th Description
+          %th Message
+          %th Wall post
+          %th Status update
+          %th Chatt message
+          %th Photo message
+          %th Photo path
+          %th
+          %th
+          %th
+        - @social_posts.each do |social_post|
+          %tr
+            %td= social_post.name
+            %td= social_post.link
+            %td= social_post.picture
+            %td= social_post.caption
+            %td= social_post.description
+            %td= social_post.message
+            %td= social_post.wall_post
+            %td= social_post.status_update
+            %td= social_post.chatt_message
+            %td= social_post.photo_message
+            %td= social_post.photo_path
+            %td= link_to 'Show', social_post
+            %td= link_to 'Edit', edit_social_post_path(social_post)
+            %td= link_to 'Destroy', social_post, confirm: 'Are you sure?', method: :delete

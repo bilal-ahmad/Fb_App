@@ -1,0 +1,104 @@
+.page
+  #primary
+    .text
+      = form_for(@setting) do |f|
+        %fieldset.col-3
+          %legend
+            %h1 App Setting
+          %ul
+            =# @setting.errors
+            %li.col-span-2
+              %label.input-text
+                %span.label Name
+                = f.text_field :name, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label Name
+                = f.text_field :provider, :class => "txarea1"
+            %li.col-span-2
+              %label
+                .input-text
+                  %span.label Type
+                = f.radio_button :type, "external"
+                %span.remember_me External
+                = f.radio_button :type, " iframe"
+                %span.remember_me iFrame
+            %li.col-span-2
+              %label
+                .input-text
+                  %span.label Status
+                = f.radio_button :status, "live"
+                %span.remember_me Live
+                = f.radio_button :status, "deleted"
+                %span.remember_me Deleted
+                = f.radio_button :status, "sleath"
+                %span.remember_me Sleath
+            %li.col-span-2
+              %label.input-text
+                %span.label Canvas URL
+                = f.text_field :canvas_url, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label Deauthorize Callback URL
+                = f.text_field :deauthorize_callback_url, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label Facebook ID
+                = f.text_field :facebook_id, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label Facebook Secret
+                = f.text_field :facebook_secret, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label Tiny URL
+                = f.text_field :tiny_url, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label
+                  %h2 Events
+              %ul.events
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Event ID
+                    = f.text_field :event_id, :class => "txarea1"
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Event Message
+                    = f.text_field :event_message, :class => "txarea1"
+                %li.col-span-2
+                  %label
+                    .input-text
+                      %span.label Event RSVP
+                    = f.check_box :event_rsvp, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label
+                  %h2 Permissions
+              %ul.permissions
+                %li
+                  %label
+                    = f.check_box :publish_stream, :class => "txarea1"
+                    %span.remember_me publish_stream
+                  %label
+                    = f.check_box :email, :class => "txarea1"
+                    %span.remember_me email
+                  %label
+                    = f.check_box :offline_access, :class => "txarea1"
+                    %span.remember_me offline_access
+                  %label
+                    = f.check_box :manage_pages, :class => "txarea1"
+                    %span.remember_me manage_pages
+                  %label
+                    = f.check_box :create_event, :class => "txarea1"
+                    %span.remember_me create_event
+                  %label
+                    = f.check_box :rsvp_event, :class => "txarea1"
+                    %span.remember_me rsvp_event
+                  %label
+                    = f.check_box :xmpp_login, :class => "txarea1"
+                    %span.remember_me xmpp_login
+        %p.buttons{:style => "margin-top:0px;"}
+          %button.primary-call{:type => "submit"} Lets go
+          = link_to 'Back', settings_path
+

@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Canvas url:</b>
+  <%= @setting.canvas_url %>
+</p>
+
+<p>
+  <b>Deauthorize callback url:</b>
+  <%= @setting.deauthorize_callback_url %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%= @setting.type %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @setting.status %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @setting.name %>
+</p>
+
+<p>
+  <b>Facebook:</b>
+  <%= @setting.facebook_id %>
+</p>
+
+<p>
+  <b>Facebook secret:</b>
+  <%= @setting.facebook_secret %>
+</p>
+
+<p>
+  <b>Facebook canvas page:</b>
+  <%= @setting.facebook_canvas_page %>
+</p>
+
+<p>
+  <b>Tiny url:</b>
+  <%= @setting.tiny_url %>
+</p>
+
+<p>
+  <b>Event:</b>
+  <%= @setting.event_id %>
+</p>
+
+<p>
+  <b>Event message:</b>
+  <%= @setting.event_message %>
+</p>
+
+<p>
+  <b>Event rsvp:</b>
+  <%= @setting.event_rsvp %>
+</p>
+
+
+<%= link_to 'Edit', edit_setting_path(@setting) %> |
+<%= link_to 'Back', settings_path %>

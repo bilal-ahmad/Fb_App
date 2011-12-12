@@ -1,4 +1,33 @@
 FacebookApp::Application.routes.draw do
+  resources :social_posts
+
+  resources :settings
+
+  resources :social_apps
+
+  resources :profiles
+
+  get "sessions/index"
+
+  get "sessions/new"
+
+  get "sessions/create"
+
+  get "profiles/new"
+
+  get "profiles/create"
+
+  get "profiles/show"
+
+  get "profiles/index"
+
+ devise_for :users, :controllers => { :registrations => 'registrations',
+                                     :sessions => 'sessions',
+                                     :confirmations => 'confirmations',
+                                     :passwords => 'passwords'}
+
+  resources :authentications
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -45,10 +74,19 @@ FacebookApp::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  match '/auth/:provider/callback' => 'authentications#create'
+  match '/post_to_facebook' => 'user_social_accounts#post_to_facebook'
+  match '/new_photo_post' => 'social_posts#new_photo_post', :as => :new_photo_post
+  match '/photo_post' => 'social_posts#photo_post'
+  match '/new_post' => 'social_posts#new_post', :as => :new_post
+  match '/post' => 'social_posts#post'
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  devise_scope :user do
+    get "/users/sign_up", :to => "sessions#new"
+  end
+  root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 

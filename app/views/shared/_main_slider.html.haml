@@ -1,0 +1,15 @@
+#myslides
+  .rightone#mygallery-paginate
+    %img{"data-moveby" => "1", "data-over" => "/assets/graycircle.png", "data-select" => "/assets/closedcircle.png", :src => "/assets/opencircle.png"}
+  #mygallery.stepcarousel
+    .belt{:style => "width: 4000px; left: 0px;"}
+      .panel{:style => "float: none; position: absolute;"}
+        =image_tag("soft-cycle.jpg")
+      .panel{:style => "float: none; position: absolute;"}
+        =image_tag("right-des.jpg")
+      .panel{:style => "float: none; position: absolute;"}
+        =image_tag("under_one_umbrella.jpg")
+      .panel{:style => "float: none; position: absolute;"}
+        =image_tag("facebook_big.jpg", :style => "height:300px;width:1000px;")
+      .panel{:style => "float: none; position: absolute;"}
+        =image_tag("youtube_big.png", :style => "height:300px;width:1000px;")

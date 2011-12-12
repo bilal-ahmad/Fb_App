@@ -1,0 +1,24 @@
+.page
+  #primary
+    .text
+      %h1 Apps
+      %br/
+      = link_to 'Create New App', new_social_app_path
+      %table
+        %tr
+          %th User
+          %th Name
+          %th Provider
+          %th
+          %th
+          %th
+        - i = 0
+        - @social_apps.each do |social_app|
+          %tr{:class=> "#{'white' if i%2 == 0}"}
+            %td= social_app.user_id
+            %td= social_app.name
+            %td= social_app.provider.titleize
+            %td= link_to 'Show', social_app
+            %td= link_to 'Settings', edit_social_app_path(social_app)
+            %td= link_to 'Destroy', social_app, confirm: 'Are you sure?', method: :delete
+          - i = i +1

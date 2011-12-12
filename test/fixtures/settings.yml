@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html
+
+one:
+  canvas_url: MyString
+  deauthorize_callback_url: MyString
+  type: 
+  status: MyString
+  name: MyString
+  facebook_id: MyString
+  facebook_secret: MyString
+  facebook_canvas_page: MyString
+  tiny_url: MyString
+  event_id: MyString
+  event_message: MyString
+  event_rsvp: MyString
+
+two:
+  canvas_url: MyString
+  deauthorize_callback_url: MyString
+  type: 
+  status: MyString
+  name: MyString
+  facebook_id: MyString
+  facebook_secret: MyString
+  facebook_canvas_page: MyString
+  tiny_url: MyString
+  event_id: MyString
+  event_message: MyString
+  event_rsvp: MyString

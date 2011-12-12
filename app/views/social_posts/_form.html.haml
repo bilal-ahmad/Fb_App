@@ -1,0 +1,68 @@
+= form_for(@social_post) do |f|
+  %ul.no_border
+    %li.col-span-2
+      %label
+        .input-text
+          %span.label Enable Welcome Post
+        = f.check_box :wall_post, :class => "txarea1"
+    %li.col-span-2
+      %label.input-text
+        %span.label Welcome Post Message
+        = f.text_area :message, :class => "txarea1"
+    %li.col-span-2
+      %label.input-text
+        %span.label.hd Post
+      %ul.posts
+        %li.col-span-2
+          %label.input-text
+            %span.label Name
+            = f.text_field :name, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Link
+            = f.text_field :link, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Picture
+            = f.text_field :picture, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Caption
+            = f.text_field :caption, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Description
+            = f.text_area :description, :class => "txarea1"
+    %li.col-span-2
+      %label.input-text
+        %span.label.hd Photo Post
+    %ul.posts
+      %li.col-span-2
+        %label.input-text
+          %span.label Photo Path
+          = f.text_field :photo_path, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Photo Message
+          = f.text_area :photo_message, :class => "txarea1"
+    %li.col-span-2
+      %label.input-text
+        %span.label.hd Chatt Message
+    %ul.posts
+      %li.col-span-2
+        %label.input-text
+          %span.label Chatt Message
+          = f.text_area :chatt_message, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Welcome Status Update
+          = f.text_area :status_update, :class => "txarea1"
+
+  %p.buttons{:style => "margin-top:0px;"}
+    %button.primary-call{:type => "submit"} Save
+    = link_to 'Back', social_apps_path
+
+
+
+
+

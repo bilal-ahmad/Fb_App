@@ -1,0 +1,51 @@
+.page
+  #primary
+    .text
+      %h1 Applications
+      %br/
+      = link_to 'Create New App', new_social_app_path
+      = link_to '| Show All', social_apps_path
+      %table.show_table
+        %tr
+          %td.title Owner
+          %td= current_user.email
+        %tr
+          %td.title Name
+          %td= @social_app.name
+        %tr
+          %td.title Provider
+          %td= @social_app.provider
+        %tr
+          %td.title Canvas URL
+          %td= @social_app.setting.canvas_url
+        %tr
+          %td.title Deauthorize Callback URL
+          %td= @social_app.setting.deauthorize_callback_url
+        %tr
+          %td.title Type
+          %td= @social_app.setting.type
+        %tr
+          %td.title Status
+          %td= @social_app.setting.status
+        %tr
+          %td.title Facebook ID
+          %td= @social_app.setting.facebook_id
+        %tr
+          %td Facebook Secret
+          %td= @social_app.setting.facebook_secret
+        %tr
+          %td.title Facebook Canvas Page
+          %td= @social_app.setting.facebook_canvas_page
+        %tr
+          %td.title Tiny URl
+          %td= @social_app.setting.tiny_url
+        %tr
+          %td.title Event Message
+          %td= @social_app.setting.event_message
+        %tr
+          %td.title Event RSVP
+          %td= @social_app.setting.event_rsvp
+        %tr
+          %td.title Permissions
+          %td= @social_app.setting.permissions
+

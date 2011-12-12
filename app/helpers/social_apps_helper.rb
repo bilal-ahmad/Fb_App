@@ -1,0 +1,2 @@
+module SocialAppsHelper
+end

@@ -1,0 +1,103 @@
+= form_for(@social_app) do |f|
+  %ul
+    =# @setting.errors
+    %li.col-span-2
+      %label.input-text
+        %span.label Name
+        = f.text_field :name, :class => "txarea1"
+    %li.col-span-2
+      %label.input-text
+        %span.label Provider
+        = f.select( "provider",{ "Facebook" => "facebook", "Twitter" => "twitter", "Youtube" => "you_tube"})
+    = f.fields_for :setting do |s|
+      %li.col-span-2
+        %label
+          .input-text
+            %span.label Type
+          = s.radio_button :type, "external"
+          %span.remember_me External
+          = s.radio_button :type, " iframe"
+          %span.remember_me iFrame
+      %li.col-span-2
+        %label
+          .input-text
+            %span.label Status
+          = s.radio_button :status, "live"
+          %span.remember_me Live
+          = s.radio_button :status, "deleted"
+          %span.remember_me Deleted
+          = s.radio_button :status, "sleath"
+          %span.remember_me Sleath
+      %li.col-span-2
+        %label.input-text
+          %span.label Canvas URL
+          = s.text_field :canvas_url, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Deauthorize Callback URL
+          = s.text_field :deauthorize_callback_url, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Facebook ID
+          = s.text_field :facebook_id, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Facebook Secret
+          = s.text_field :facebook_secret, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Tiny URL
+          = s.text_field :tiny_url, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label
+            %h2 Events
+        %ul.events
+          %li.col-span-2
+            %label.input-text
+              %span.label Event ID
+              = s.text_field :event_id, :class => "txarea1"
+          %li.col-span-2
+            %label.input-text
+              %span.label Event Message
+              = s.text_area :event_message, :class => "txarea1"
+          %li.col-span-2
+            %label
+              .input-text
+                %span.label Event RSVP
+              = s.check_box :event_rsvp, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label
+            %h2 Permissions
+        %ul.permissions
+          %li
+            %label
+              = s.check_box :publish_stream, :class => "txarea1"
+              %span.remember_me publish_stream
+            %label
+              = s.check_box :email, :class => "txarea1"
+              %span.remember_me email
+            %label
+              = s.check_box :offline_access, :class => "txarea1"
+              %span.remember_me offline_access
+            %label
+              = s.check_box :manage_pages, :class => "txarea1"
+              %span.remember_me manage_pages
+            %label
+              = s.check_box :create_event, :class => "txarea1"
+              %span.remember_me create_event
+            %label
+              = s.check_box :rsvp_event, :class => "txarea1"
+              %span.remember_me rsvp_event
+            %label
+              = s.check_box :xmpp_login, :class => "txarea1"
+              %span.remember_me xmpp_login
+  %p.buttons{:style => "margin-top:0px;"}
+    %button.primary-call{:type => "submit"} Save
+    = link_to 'Back', social_apps_path
+
+
+
+
+

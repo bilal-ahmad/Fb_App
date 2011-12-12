@@ -1,0 +1,79 @@
+/* CSS Document */
+#myslides {
+  position: relative;
+  height: 315px;
+  float: left;
+  float: left;
+  text-align: center;
+  width: 104.3%; }
+
+.stepcarousel {
+  position: relative;
+  overflow: scroll;
+  height: 300px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  width: 986p; }
+  .stepcarousel .belt {
+    position: absolute;
+    left: 0;
+    top: 0; }
+  .stepcarousel .panel {
+    float: left;
+    overflow: hidden;
+    width: 1000px;
+    height: 300px; }
+    .stepcarousel .panel h2 {
+      color: #35649a;
+      float: left;
+      margin: 0px 10px 0px 0px; }
+    .stepcarousel .panel a {
+      margin: 0px 10px 0px 10px; }
+    .stepcarousel .panel br {
+      clear: both;
+      margin: 10px 0px 10px 0px; }
+    .stepcarousel .panel div {
+      margin-top: 0px; }
+
+.leftone {
+  width: 43px;
+  height: 44px;
+  position: absolute;
+  right: 45px;
+  top: 262px;
+  z-index: 60; }
+
+.rightone {
+  width: 100px;
+  height: 44px;
+  position: absolute;
+  right: 7px;
+  top: 282px;
+  z-index: 60; }
+
+.inpost {
+  float: left;
+  padding: 5px 0px;
+  margin: 2px 5px;
+  width: 530px;
+  z-index: 100;
+  height: 180px; }
+  .inpost h2 {
+    margin: 0px 0px 0px 0px;
+    padding: 5px 5px;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    overflow: hidden;
+    font-family: Century gothic, Arial, Tahoma, sans-serif;
+    color: white; }
+    .inpost h2 a:link, .inpost h2 a:visited {
+      color: white; }
+  .inpost p {
+    margin: 0px 0px 0px 0px;
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 20px;
+    overflow: hidden;
+    font-family: Tahoma, Century gothic, Arial, sans-serif;
+    color: #375167; }
