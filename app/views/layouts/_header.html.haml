@@ -9,7 +9,8 @@
             = link_to 'Apps', social_apps_path
           %li{:class => "#{active_class("social_posts")}"}
             = link_to 'Posts', social_posts_path
-
+          %li{:class => "#{active_class("profiles")}"}
+            = link_to 'Profiles', profiles_path
           %li{:class => "#{active_class("sessions")}"}
             = link_to "Log Out", destroy_user_session_path, :method => :delete
 

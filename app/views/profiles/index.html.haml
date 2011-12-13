@@ -13,9 +13,6 @@
           %th Location
           %th City
           %th Country
-          %th Gender
-          %th Profile Link
-          %th Time Zone
           %th Created
           %th Modified
           %th
@@ -30,9 +27,6 @@
             %td= profile.location
             %td= profile.city
             %td= profile.country
-            %td= profile.gender
-            %td= link_to(profile.profile_link, profile.profile_link, :target => "_blank")
-            %td= profile.time_zone
             %td= profile.created_at
             %td= profile.updated_at
             %td= link_to 'Show', profile
