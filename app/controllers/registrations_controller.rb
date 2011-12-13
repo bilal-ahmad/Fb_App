@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  before_filter :protect
+  #before_filter :protect
   def create
     super
     session[:omniauth] = nil unless @user.new_record?
