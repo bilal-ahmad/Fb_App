@@ -82,7 +82,7 @@ class AuthenticationsController < ApplicationController
     Profile.create( :user_id => user_id, :oauth_token => oauth_token, :name => name, :first_name => first_name,
                     :last_name => last_name, :image =>image,
                     :location => location, :city => city,
-                    :country => country, :profile_link => profile_link,
+                    :country => country.strip, :profile_link => profile_link,
                     :gender => gender, :time_zone => time_zone)
   end
 

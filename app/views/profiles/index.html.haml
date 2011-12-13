@@ -1,22 +1,20 @@
-.page.page_post
+.page
   #primary
     .text
       %h1 Apps
       %br/
-      = link_to 'Create New App', new_social_app_path
       %table.posts
         %tr
           %th User
           %th Name
           %th Email
           %th image
-          %th Location
+          -#%th Location
           %th City
           %th Country
           %th Created
-          %th Modified
-          %th
-          %th
+          -#%th
+          -#%th
         - i = 0
         - @profiles.each do |profile|
           %tr{:class=> "#{'white' if i%2 == 0}"}
@@ -24,11 +22,10 @@
             %td= "#{profile.first_name.to_s} #{profile.last_name.to_s}"
             %td= profile.user.email
             %td= image_tag(profile.image)
-            %td= profile.location
+            -#%td= profile.location
             %td= profile.city
             %td= profile.country
-            %td= profile.created_at
-            %td= profile.updated_at
-            %td= link_to 'Show', profile
-            %td= link_to 'Settings', edit_profile_path(profile)
+            %td= profile.created_at.strftime("%m/%d/%Y")
+            -#%td= link_to 'Show', profile
+            -#%td= link_to 'Settings', edit_profile_path(profile)
           - i = i +1
