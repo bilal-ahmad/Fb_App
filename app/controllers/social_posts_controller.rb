@@ -147,7 +147,10 @@ class SocialPostsController < ApplicationController
           end
         end
       end
-    rescue
+    rescue Exception => exc
+       Rails.logger.info "*******************************"
+       Rails.logger.info ("Message for the log file #{exc.message}")
+       Rails.logger.info "*******************************"
        flash[:error] = "There is some error in post"
     end
   end
