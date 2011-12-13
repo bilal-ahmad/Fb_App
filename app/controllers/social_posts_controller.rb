@@ -133,8 +133,9 @@ class SocialPostsController < ApplicationController
     picture = params[:social_post][:picture]
     user = ""
     begin
-      params[:countries].each do |country|
-        user =  Profile.find_all_by_country(country) if !Profile.find_all_by_country(country).blank?
+      countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
+      countries.each do |country|
+        countries.first == "all" ? (user =  Profile.all) : (user =  Profile.find_all_by_country(country))
         if !user.nil? and user.count == 1
           @graph = Koala::Facebook::GraphAPI.new(user.first.oauth_token)
           @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})

@@ -15,7 +15,7 @@
               =country.name
       %li
         %label
-          = f.check_box :all_countries, :class => "txarea1"
+          = check_box_tag "countries[]", "all", false
           %span.remember_me All
     %li.col-span-2
       %label.input-text
