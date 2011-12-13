@@ -1,5 +1,5 @@
 class UserSocialAccountsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_admin!
   require 'koala'
 
   def post_to_facebook

@@ -1,0 +1,20 @@
+.page
+  #primary.login_reg_page
+    .text
+      = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+        %fieldset.col-3
+          %legend
+            %h1 Sign In
+          %ul
+            = flash_messages
+            %li.col-span-2
+              %label.input-text
+                %span.label Email
+                = f.email_field :email, :class => "txarea1"
+            %li.col-span-2
+              %label.input-text
+                %span.label Password
+                = f.password_field :password, :class => "txarea1"
+        %p.buttons{:style => "margin-top:0px;"}
+          %button.primary-call{:type => "submit"} Lets go
+          %a{:href => "/employer_dashboard"} Cancel

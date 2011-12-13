@@ -1,5 +1,5 @@
 class SocialPostsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_admin!, :except => :show
   # GET /social_posts
   # GET /social_posts.json
   require "koala"

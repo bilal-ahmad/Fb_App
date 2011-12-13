@@ -10,5 +10,14 @@ class ApplicationController < ActionController::Base
     info
   end
 
+  def get_oauth_url
+    if Rails.env.production?
+      oauth_facebook_url = "http://stark-robot-3518.herokuapp.com/auth/facebook"
+    elsif Rails.env.development?
+      oauth_facebook_url = "http://localhost:3000/auth/facebook"
+    end
+    oauth_facebook_url
+  end
+
 
 end

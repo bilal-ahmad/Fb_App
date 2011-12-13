@@ -22,9 +22,14 @@ FacebookApp::Application.routes.draw do
   get "profiles/index"
 
  devise_for :users, :controllers => { :registrations => 'registrations',
-                                     :sessions => 'sessions',
-                                     :confirmations => 'confirmations',
-                                     :passwords => 'passwords'}
+                                      :sessions => 'sessions',
+                                      :confirmations => 'confirmations',
+                                      :passwords => 'passwords'}
+
+ devise_for :admins, :controllers => { :registrations => 'admin/registrations',
+                                       :sessions => 'admin/sessions',
+                                       :confirmations => 'admin/confirmations',
+                                       :passwords => 'admin/passwords'}
 
   resources :authentications
 

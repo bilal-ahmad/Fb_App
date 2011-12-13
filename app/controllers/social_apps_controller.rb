@@ -1,5 +1,5 @@
 class SocialAppsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_admin!
   # GET /social_apps
   # GET /social_apps.json
   def index
