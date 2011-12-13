@@ -123,13 +123,20 @@ class SocialPostsController < ApplicationController
     caption = params[:social_post][:caption]
     description = params[:social_post][:description]
     picture = params[:social_post][:picture]
+    user = ""
     begin
     if params[:countries].present?
       params[:countries].each do |country|
         user =  Profile.find_all_by_country(country) if !Profile.find_all_by_country(country).blank?
-        if !user.nil?
+        if !user.nil? and user.count == 1
           @graph = Koala::Facebook::GraphAPI.new(user.first.oauth_token)
           @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+        elsif !user.nil? and user.count > 1
+          users = user
+          users.each do |user|
+            @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
+            @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+          end
         end
       end
       flash[:notice] = "Successfully posted to the walls"
