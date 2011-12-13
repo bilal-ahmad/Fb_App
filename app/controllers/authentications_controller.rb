@@ -47,6 +47,7 @@ class AuthenticationsController < ApplicationController
       user = User.new
       user.apply_omniauth(omniauth)
       user.email = omniauth['extra'] && omniauth['extra']['raw_info'] && omniauth['extra']['raw_info']['email']
+      user.password = Devise.friendly_token[0,20]
       if user.save
         create_facebook_profile(user, omniauth)
         flash[:notice] = "Successfully registered"
