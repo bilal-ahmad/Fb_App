@@ -110,7 +110,7 @@ class SocialPostsController < ApplicationController
   end
 
   def new_post
-    @countries = SocialPost.find_by_sql("SELECT name FROM `countries` WHERE `active` = 1")
+    @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = 1")
     @social_post = SocialPost.new
 
     respond_to do |format|

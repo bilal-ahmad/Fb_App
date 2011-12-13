@@ -16,6 +16,7 @@ gem 'haml'
 gem 'carrierwave'
 gem 'heroku'
 gem 'pg'
+gem 'taps'
 
 group :development do
   gem 'mysql'
