@@ -1831,4 +1831,10 @@ table.posts th{
 .page_post{
     margin-left: 1.6% !important;
 }
+.col_w{
+    width: 75px !important;
+}
+.w_100{
+    width: 800px !important;
+}
 

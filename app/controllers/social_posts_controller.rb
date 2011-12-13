@@ -5,8 +5,11 @@ class SocialPostsController < ApplicationController
   require "koala"
 
   def index
-    @social_posts = SocialPost.all
-
+    if params[:post_type] == "photo"
+      @photo_posts = SocialPost.find_all_by_post_type("photo")
+    else
+      @posts = SocialPost.find_all_by_post_type("post")
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @social_posts }
