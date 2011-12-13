@@ -5,7 +5,7 @@
         %legend
           %h1 New Post
           %br/
-          = link_to 'Show All', social_posts_path
-
-        = render 'form'
+          = link_to 'Create Post', new_social_post_path
+          = link_to '| Show All', social_posts_path
+        = render 'post_form'
 

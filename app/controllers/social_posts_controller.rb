@@ -27,6 +27,7 @@ class SocialPostsController < ApplicationController
   # GET /social_posts/new
   # GET /social_posts/new.json
   def new
+    @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
     @social_post = SocialPost.new
 
     respond_to do |format|
@@ -47,7 +48,11 @@ class SocialPostsController < ApplicationController
 
     respond_to do |format|
       if @social_post.save
-        format.html { redirect_to @social_post, notice: 'Social post was successfully created.' }
+        if params[:sap].present?
+          post(params)
+          @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+          format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+        end
         format.json { render json: @social_post, status: :created, location: @social_post }
       else
         format.html { render action: "new" }
@@ -63,7 +68,9 @@ class SocialPostsController < ApplicationController
 
     respond_to do |format|
       if @social_post.update_attributes(params[:social_post])
-        format.html { redirect_to @social_post, notice: 'Social post was successfully updated.' }
+        @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+        post(params)
+        format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -109,42 +116,28 @@ class SocialPostsController < ApplicationController
     result
   end
 
-  def new_post
-    @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-    @social_post = SocialPost.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @social_post }
-    end
-  end
-
-  def post
+  def post(social_post)
     Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
     name = params[:social_post][:name]
     link = params[:social_post][:link]
     caption = params[:social_post][:caption]
     description = params[:social_post][:description]
     picture = params[:social_post][:picture]
-    users = Array.new
     begin
     if params[:countries].present?
       params[:countries].each do |country|
-        users << Profile.find_all_by_country(country) if !Profile.find_all_by_country(country).blank?
+        user =  Profile.find_all_by_country(country) if !Profile.find_all_by_country(country).blank?
+        if !user.nil?
+          @graph = Koala::Facebook::GraphAPI.new(user.first.oauth_token)
+          @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+        end
       end
-      users[0].each do |user|
-        @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
-        @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-      end
-        flash[:notice] = "Successfully posted to the walls"
-        redirect_to new_post_path
+      flash[:notice] = "Successfully posted to the walls"
     else
       flash[:error] = "Select the country"
-      redirect_to new_post_path
     end
     rescue
        flash[:error] = "There is some error in post"
-      redirect_to new_post_path
     end
   end
 

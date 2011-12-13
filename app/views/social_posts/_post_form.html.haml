@@ -1,4 +1,5 @@
-= form_for(@social_post, :url => post_path) do |f|
+= form_for(@social_post) do |f|
+  = f.hidden_field :post_type, :value => "post"
   %ul.no_border
     = flash_messages
     = error_messages(@social_post)
@@ -41,7 +42,8 @@
           %span.label Description
           = f.text_area :description, :class => "txarea1"
   %p.buttons{:style => "margin-top:0px;"}
-    %button.primary-call{:type => "submit"} Save
+    %button.primary-call{:type => "submit", :name => "sap", :value => "sap"} Save and Post
+    %button.primary-call{:type => "submit", :name => "sad", :value => "sad"} Save as Draft
     = link_to 'Back', social_apps_path
 
 
