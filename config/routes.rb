@@ -83,7 +83,6 @@ FacebookApp::Application.routes.draw do
   match '/post_to_facebook' => 'user_social_accounts#post_to_facebook'
   match '/new_photo_post' => 'social_posts#new_photo_post', :as => :new_photo_post
   match '/photo_post' => 'social_posts#photo_post'
-  match '/new_post' => 'social_posts#new_post', :as => :new_post
   match '/post' => 'social_posts#post'
 
   # You can have the root of your site routed with "root"
