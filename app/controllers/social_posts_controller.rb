@@ -47,16 +47,21 @@ class SocialPostsController < ApplicationController
     @social_post = SocialPost.new(params[:social_post])
 
     respond_to do |format|
-      if @social_post.save
-        if params[:sap].present?
-          post(params)
-          @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-          format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+      if params[:countries].present?
+        if @social_post.save
+          if params[:sap].present?
+            post(params)
+            @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+            format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+          end
+          format.json { render json: @social_post, status: :created, location: @social_post }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @social_post.errors, status: :unprocessable_entity }
         end
-        format.json { render json: @social_post, status: :created, location: @social_post }
       else
+        flash[:error] = "Select the country"
         format.html { render action: "new" }
-        format.json { render json: @social_post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -125,7 +130,6 @@ class SocialPostsController < ApplicationController
     picture = params[:social_post][:picture]
     user = ""
     begin
-    if params[:countries].present?
       params[:countries].each do |country|
         user =  Profile.find_all_by_country(country) if !Profile.find_all_by_country(country).blank?
         if !user.nil? and user.count == 1
@@ -139,10 +143,6 @@ class SocialPostsController < ApplicationController
           end
         end
       end
-      flash[:notice] = "Successfully posted to the walls"
-    else
-      flash[:error] = "Select the country"
-    end
     rescue
        flash[:error] = "There is some error in post"
     end
