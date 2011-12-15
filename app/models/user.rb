@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :authentications, :dependent => :delete_all
   has_one :profile
   has_many :social_apps
+  has_many :social_posts
 
   def apply_omniauth(omniauth)
     provider = omniauth['provider']
