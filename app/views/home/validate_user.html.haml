@@ -1,0 +1,5 @@
+%script
+  :plain
+    function redirect(url) { return window.top.location.replace(url); }
+    permission_url = "#{@auth_url}";
+    redirect(permission_url)

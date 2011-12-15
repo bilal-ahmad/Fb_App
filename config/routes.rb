@@ -84,6 +84,7 @@ FacebookApp::Application.routes.draw do
   match '/new_photo_post' => 'social_posts#new_photo_post', :as => :new_photo_post
   match '/photo_post' => 'social_posts#photo_post'
   match '/post' => 'social_posts#post'
+  match 'validate_user_path' => 'home#validate_user', :as => :validate_user_path
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.

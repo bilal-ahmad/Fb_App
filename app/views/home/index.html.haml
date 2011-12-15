@@ -1,89 +1,82 @@
-- if !current_user
-  %script
-    :plain
-      function redirect(url) { return window.top.location.replace(url); }
-      permission_url = "#{@auth_url}";
-      redirect(permission_url)
-- if current_user
-  %script
-    :plain
-      stepcarousel.setup({
-          galleryid: 'mygallery', //id of carousel DIV
-          beltclass: 'belt', //class of inner "belt" DIV containing all the panel DIVs
-          panelclass: 'panel', //class of panel DIVs each holding content
-          autostep: {enable:true, moveby:1, pause:4000},
-          panelbehavior: {speed:500, wraparound:true, persist:true},
-          defaultbuttons: {enable: false, moveby: 2},
-          statusvars: ['statusA', 'statusB', 'statusC'], //register 3 variables that contain current panel (start), current panel (last), and total panels
-          contenttype: ['external'] //content setting ['inline'] or ['external', 'path_to_external_file']
-      });
-  #content
-    .page
-      #primary{:style => "width:100%;"}
-        .text
-          =render "shared/main_slider"
-          .clear
-          .services
-            %ul
-              %li
-                .services_text
-                  %ul
-                    %li.image
-                      =image_tag("facebook.jpg", :class => "services_image")
-                    %li.p_txt
-                      %p
-                        =link_to("Facebook", "#")
-                        %br
-                        We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
-              %li
-                .services_text
-                  %ul
-                    %li.image
-                      =image_tag("twitter.jpg", :class => "services_image")
-                    %li.p_txt
-                      %p
-                        =link_to("Twitter", "#")
-                        %br
-                        We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
-              %li
-                .services_text
-                  %ul
-                    %li.image
-                      =image_tag("youtube.jpg", :class => "services_image")
-                    %li.p_txt
-                      %p
-                        =link_to("YouTube", "#")
-                        %br
-                        We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
-              %li
-                .services_text
-                  %ul
-                    %li.image
-                      =image_tag("google.jpg", :class => "services_image")
-                    %li.p_txt
-                      %p
-                        =link_to("Google", "#")
-                        %br
-                        We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
-              %li
-                .services_text
-                  %ul
-                    %li.image
-                      =image_tag("open_id.jpg", :class => "services_image")
-                    %li.p_txt
-                      %p
-                        =link_to("Open ID", "#")
-                        %br
-                        We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
-              %li
-                .services_text
-                  %ul
-                    %li.image
-                      =image_tag("open_id.jpg", :class => "services_image")
-                    %li.p_txt
-                      %p
-                        =link_to("Open ID", "#")
-                        %br
-                        We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
+%script
+  :plain
+    stepcarousel.setup({
+        galleryid: 'mygallery', //id of carousel DIV
+        beltclass: 'belt', //class of inner "belt" DIV containing all the panel DIVs
+        panelclass: 'panel', //class of panel DIVs each holding content
+        autostep: {enable:true, moveby:1, pause:4000},
+        panelbehavior: {speed:500, wraparound:true, persist:true},
+        defaultbuttons: {enable: false, moveby: 2},
+        statusvars: ['statusA', 'statusB', 'statusC'], //register 3 variables that contain current panel (start), current panel (last), and total panels
+        contenttype: ['external'] //content setting ['inline'] or ['external', 'path_to_external_file']
+    });
+#content
+  .page
+    #primary{:style => "width:100%;"}
+      .text
+        =render "shared/main_slider"
+        .clear
+        .services
+          %ul
+            %li
+              .services_text
+                %ul
+                  %li.image
+                    =image_tag("facebook.jpg", :class => "services_image")
+                  %li.p_txt
+                    %p
+                      =link_to("Facebook", "#")
+                      %br
+                      We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
+            %li
+              .services_text
+                %ul
+                  %li.image
+                    =image_tag("twitter.jpg", :class => "services_image")
+                  %li.p_txt
+                    %p
+                      =link_to("Twitter", "#")
+                      %br
+                      We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
+            %li
+              .services_text
+                %ul
+                  %li.image
+                    =image_tag("youtube.jpg", :class => "services_image")
+                  %li.p_txt
+                    %p
+                      =link_to("YouTube", "#")
+                      %br
+                      We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
+            %li
+              .services_text
+                %ul
+                  %li.image
+                    =image_tag("google.jpg", :class => "services_image")
+                  %li.p_txt
+                    %p
+                      =link_to("Google", "#")
+                      %br
+                      We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
+            %li
+              .services_text
+                %ul
+                  %li.image
+                    =image_tag("open_id.jpg", :class => "services_image")
+                  %li.p_txt
+                    %p
+                      =link_to("Open ID", "#")
+                      %br
+                      We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
+            %li
+              .services_text
+                %ul
+                  %li.image
+                    =image_tag("open_id.jpg", :class => "services_image")
+                  %li.p_txt
+                    %p
+                      =link_to("Open ID", "#")
+                      %br
+                      We want you to think BIG! Whether it's designing a logo for your website or building a brand for the client, the only way to obtain true success is to think as big as you want to be. That's why Artex has combined industry professionals together to display the work of their hands and promote those who aim to please rather than squeeze!
 
 
