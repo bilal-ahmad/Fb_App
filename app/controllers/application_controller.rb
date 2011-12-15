@@ -18,9 +18,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_root_url
+  def get_app_url
     if Rails.env.production?
-      app_root_url = "http://apps.facebook.com/260685093987581/"
+      app_root_url = "http://apps.facebook.com/doyousocial"
     elsif Rails.env.development?
       app_root_url = "http://localhost:3000/"
     end

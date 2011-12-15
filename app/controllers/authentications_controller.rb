@@ -51,7 +51,8 @@ class AuthenticationsController < ApplicationController
       if user.save
         create_facebook_profile(user, omniauth)
         flash[:notice] = "Successfully registered"
-        redirect_to root_path
+        sign_in(:user, user)
+        redirect_to get_app_url
       else
         session[:omniauth] = omniauth.except('extra')
         session[:omniauth_email] = omniauth['extra'] && omniauth['extra']['user_hash'] && omniauth['extra']['user_hash']['email']
