@@ -2,8 +2,9 @@
 - else
   %script
     :plain
-      url = "#{get_oauth_url}";
       function redirect(url) { return window.top.location.replace(url); }
+      permission_url = "#{get_oauth_url}";
+      redirect(permission_url)
   %script
     :plain
       stepcarousel.setup({
