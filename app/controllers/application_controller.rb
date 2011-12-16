@@ -18,11 +18,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_auth_app_url
+    if Rails.env.production?
+      app_root_url = "http://apps.facebook.com/doyousocial/?user=cc"
+    elsif Rails.env.development?
+      app_root_url = "http://apps.facebook.com/317467998278508/?user=cc"
+    end
+  end
+
   def get_app_url
     if Rails.env.production?
-      app_root_url = "http://apps.facebook.com/doyousocial"
+      app_root_url = "http://apps.facebook.com/doyousocial/"
     elsif Rails.env.development?
-      app_root_url = "http://localhost:3000/"
+      app_root_url = "http://apps.facebook.com/317467998278508/"
     end
   end
 
