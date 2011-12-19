@@ -83,6 +83,8 @@ FacebookApp::Application.routes.draw do
   match '/post_to_facebook' => 'user_social_accounts#post_to_facebook'
   match '/new_photo_post' => 'social_posts#new_photo_post', :as => :new_photo_post
   match '/photo_post' => 'social_posts#photo_post'
+  match '/edit_welcome_post' => 'social_posts#edit_welcome_post', :as => :edit_welcome_post
+  match '/update_welcome_post' => 'social_posts#update_welcome_post', :as => :update_welcome_post
   match '/post' => 'social_posts#post'
   match 'validate_user' => 'home#validate_user', :as => :validate_user
 

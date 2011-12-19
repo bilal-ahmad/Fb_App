@@ -69,6 +69,8 @@ class SocialPostsController < ApplicationController
     end
   end
 
+
+
   # PUT /social_posts/1
   # PUT /social_posts/1.json
   def update
@@ -108,12 +110,31 @@ class SocialPostsController < ApplicationController
     end
   end
 
+  def edit_welcome_post
+    @social_post = SocialPost.find_by_post_type("welcome")
+  end
+
+  def update_welcome_post
+    @social_post = SocialPost.find_by_post_type("welcome")
+    respond_to do |format|
+      if @social_post.update_attributes(params[:social_post])
+        format.html { render action: "edit_welcome_post" , :notice => 'Welcome post was successfully drafted.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "edit_welcome_post" }
+        format.json { render json: @social_post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def photo_post
     Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
     @graph = Koala::Facebook::GraphAPI.new(current_user.profile.oauth_token)
     result = @graph.put_picture("http://graph.facebook.com/100001772685920/picture?type=square", {:message => "my first post"}, "me")
     result
   end
+
+
 
   def post(social_post)
     Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}

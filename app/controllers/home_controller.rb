@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    if params[:user].present? and params[:user] == "cc"
+    if params[:user].present? and params[:user] == "cc"  or admin_signed_in?
     else
       redirect_to validate_user_path
     end

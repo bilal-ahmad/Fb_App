@@ -6,6 +6,7 @@
       =# link_to 'Create Post  |', new_social_post_path
       = link_to 'Create Photo Post  |', new_photo_post_path
       = link_to 'Create Post |', new_social_post_path
+      = link_to 'Welcome Post |', edit_welcome_post_path
       = link_to 'Show Photo Post  |', social_posts_path(:post_type => "photo")
       = link_to 'Show Post', social_posts_path(:post_type => "post")
       - if @posts.present?

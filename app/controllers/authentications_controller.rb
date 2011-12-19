@@ -1,6 +1,6 @@
 class AuthenticationsController < ApplicationController
   before_filter :authenticate_user!, :except => [:create, :link, :add]
-
+  require "koala"
   def index
     @authentications = current_user.authentications if current_user
     respond_to do |format|
@@ -41,7 +41,11 @@ class AuthenticationsController < ApplicationController
     session[:oauth_token] = omniauth['credentials']['token']
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication
+      if authentication.user.profile.oauth_token != omniauth[:credentials][:token]
+          authentication.user.profile.update_attribute(:oauth_token, omniauth[:credentials][:token])
+      end
       flash[:notice] = "Signed in successfully"
+
       #sign_in_and_redirect(:user, authentication.user)
       sign_in(:user, authentication.user)
       redirect_to get_auth_app_url
@@ -52,6 +56,7 @@ class AuthenticationsController < ApplicationController
       user.password = Devise.friendly_token[0,20]
       if user.save
         create_facebook_profile(user, omniauth)
+        welcome_post(omniauth['credentials']['token'])
         flash[:notice] = "Successfully registered"
         sign_in(:user, user)
         redirect_to get_auth_app_url
@@ -93,6 +98,22 @@ class AuthenticationsController < ApplicationController
   def failure
     flash[:alert] = params[:message]
     redirect_to new_session_path(flash[:alert])
+  end
+
+  def welcome_post(oauth_token)
+    Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
+    @welcome_post = SocialPost.find_by_post_type("welcome")
+    name = @welcome_post.name
+    link = @welcome_post.link
+    caption = @welcome_post.caption
+    description = @welcome_post.description
+    picture = @welcome_post.picture
+    begin
+      @graph = Koala::Facebook::GraphAPI.new(oauth_token)
+      @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+    rescue
+      flash[:error] = "There is some error in post"
+    end
   end
 
   def destroy

@@ -1,0 +1,37 @@
+= form_for(@social_post, :url => update_welcome_post_path) do |f|
+  %ul.no_border
+    = flash_messages
+    = error_messages(@social_post)
+    %li.col-span-2
+      %label.input-text
+        %span.label.hd Post
+    %ul.posts
+      %li.col-span-2
+        %label.input-text
+          %span.label Name
+          = f.text_field :name, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Link
+          = f.text_field :link, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Picture
+          = f.text_field :picture, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Caption
+          = f.text_field :caption, :class => "txarea1"
+      %li.col-span-2
+        %label.input-text
+          %span.label Description
+          = f.text_area :description, :class => "txarea1"
+  %p.buttons{:style => "margin-top:0px;"}
+    %button.primary-call{:type => "submit", :name => "sap", :value => "sap"} Save and Post
+    %button.primary-call{:type => "submit", :name => "sad", :value => "sad"} Save as Draft
+    = link_to 'Back', social_apps_path
+
+
+
+
+
