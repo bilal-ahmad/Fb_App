@@ -143,8 +143,6 @@ class SocialPostsController < ApplicationController
     caption = params[:social_post][:caption]
     description = params[:social_post][:description]
     picture = params[:social_post][:picture]
-    user = ""
-    lost_users = Array.new
     begin
       countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
       countries.each do |country|
@@ -153,17 +151,23 @@ class SocialPostsController < ApplicationController
           @graph = Koala::Facebook::API.new(user.first.oauth_token)
           begin
              @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-          rescue
-            lost_users << wall_post
+          rescue Exception => exc
+            Rails.logger.info "*******************************"
+            Rails.logger.info ("Message for the log file #{exc.message}")
+            Rails.logger.info "*******************************"
+            flash[:error] = "There is some error in post"
           end
         elsif !user.nil? and user.count > 1
           users = user
           users.each do |user|
             @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
             begin
-              wall_post = @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-            rescue
-              lost_users << wall_post
+              @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+            rescue Exception => exc
+              Rails.logger.info "*******************************"
+              Rails.logger.info ("Message for the log file #{exc.message}")
+              Rails.logger.info "*******************************"
+              flash[:error] = "There is some error in post"
             end
           end
         end
