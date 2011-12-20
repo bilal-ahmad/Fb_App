@@ -144,18 +144,27 @@ class SocialPostsController < ApplicationController
     description = params[:social_post][:description]
     picture = params[:social_post][:picture]
     user = ""
+    lost_users = Array.new
     begin
       countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
       countries.each do |country|
         countries.first == "all" ? (user =  Profile.all) : (user =  Profile.find_all_by_country(country))
         if !user.nil? and user.count == 1
-          @graph = Koala::Facebook::GraphAPI.new(user.first.oauth_token)
-          @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+          @graph = Koala::Facebook::API.new(user.first.oauth_token)
+          begin
+             @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+          rescue
+            lost_users << wall_post
+          end
         elsif !user.nil? and user.count > 1
           users = user
           users.each do |user|
             @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
-            @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+            begin
+              wall_post = @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+            rescue
+              lost_users << wall_post
+            end
           end
         end
       end
