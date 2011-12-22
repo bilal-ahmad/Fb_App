@@ -1,5 +1,5 @@
 class AddAuthorizeToProfiles < ActiveRecord::Migration
   def change
-    add_column :profiles, :authorize, :boolean, :default => 1
+    add_column :profiles, :authorize, :boolean, :default => true
   end
 end
