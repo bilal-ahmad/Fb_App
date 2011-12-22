@@ -19,4 +19,16 @@ class ProfilesController < ApplicationController
     end
   end
 
+  # DELETE /profiles/1
+  # DELETE /profiles/1.json
+  def destroy
+    @profile = Profile.find(params[:id])
+    @profile.destroy
+
+    respond_to do |format|
+      format.html { redirect_to profiles_url }
+      format.json { head :ok }
+    end
+  end
+
 end

@@ -12,8 +12,9 @@
           -#%th Location
           %th City
           %th Country
+          %th Authorize
           %th Created
-          -#%th
+          %th
           -#%th
         - i = 0
         - @profiles.each do |profile|
@@ -25,7 +26,9 @@
             -#%td= profile.location
             %td= profile.city
             %td= profile.country
+            %td= profile.authorize
             %td= profile.created_at.strftime("%m/%d/%Y")
+            %td= link_to 'Destroy', profile, confirm: 'Are you sure?', method: :delete
             -#%td= link_to 'Show', profile
             -#%td= link_to 'Settings', edit_profile_path(profile)
           - i = i +1
