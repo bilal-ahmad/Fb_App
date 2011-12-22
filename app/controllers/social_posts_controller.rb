@@ -143,40 +143,42 @@ class SocialPostsController < ApplicationController
     caption = params[:social_post][:caption]
     description = params[:social_post][:description]
     picture = params[:social_post][:picture]
-    begin
-      countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
-      countries.each do |country|
-        countries.first == "all" ? (user =  Profile.all) : (user =  Profile.find_all_by_country(country))
-        if !user.nil? and user.count == 1
-          @graph = Koala::Facebook::API.new(user.first.oauth_token)
-          begin
-             @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-          rescue Exception => exc
-            Rails.logger.info "*******************************"
-            Rails.logger.info ("Message for the log file #{exc.message}")
-            Rails.logger.info "*******************************"
-            flash[:error] = "There is some error in post"
+    countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
+    countries.each do |country|
+      countries.first == "all" ? (user =  Profile.find_all_by_authorize(true)) : (user =  Profile.find_all_by_country_and_authorize(country, true))
+      if !user.nil? and user.count == 1
+        @graph = Koala::Facebook::API.new(user.first.oauth_token)
+        begin
+          @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+        rescue Exception => e
+          case e.message
+            when /Duplicate status message/
+              # handle dup code
+            when /Error validating access token/
+              user.update_attribute(:authorize, 0)
+            else
+              raise e
           end
-        elsif !user.nil? and user.count > 1
-          users = user
-          users.each do |user|
-            @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
-            begin
-              @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-            rescue Exception => exc
-              Rails.logger.info "*******************************"
-              Rails.logger.info ("Message for the log file #{exc.message}")
-              Rails.logger.info "*******************************"
-              flash[:error] = "There is some error in post"
+        end
+      elsif !user.nil? and user.count > 1
+        users = user
+        users.each do |user|
+          @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
+          begin
+            @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
+          rescue Exception => e
+            case e.message
+              when /Duplicate status message/
+                e.message
+              # handle dup code
+              when /Error validating access token/
+                user.update_attribute(:authorize, 0)
+              else
+                raise e
             end
           end
         end
       end
-    rescue Exception => exc
-       Rails.logger.info "*******************************"
-       Rails.logger.info ("Message for the log file #{exc.message}")
-       Rails.logger.info "*******************************"
-       flash[:error] = "There is some error in post"
     end
   end
 
