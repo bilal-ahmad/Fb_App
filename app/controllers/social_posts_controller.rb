@@ -67,7 +67,7 @@ class SocialPostsController < ApplicationController
           format.json { render json: @social_post.errors, status: :unprocessable_entity }
         end
       else
-        flash[:error] = "Select the country"
+        flash[:error] = "Select the country or Facebook Account"
         format.html { render action: "new" }
       end
     end
@@ -80,17 +80,24 @@ class SocialPostsController < ApplicationController
   def update
     @social_post = SocialPost.find(params[:id])
     @facebook_accounts = Profile.find_all_by_authorize true
-
-    respond_to do |format|
-      if @social_post.update_attributes(params[:social_post])
-        @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-        post(params)
-        format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @social_post.errors, status: :unprocessable_entity }
+    if params[:countries].present? or params[:facebook_accounts].present?
+      respond_to do |format|
+        if @social_post.update_attributes(params[:social_post])
+          if params[:sap].present?
+            @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+            post(params)
+            format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+          end
+          format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+          format.json { head :ok }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @social_post.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:error] = "Select the country or Facebook Account"
+      format.html { render action: "edit" }
     end
   end
 

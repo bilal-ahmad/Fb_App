@@ -1839,7 +1839,7 @@ table.posts th{
 }
 .facebook_accounts{
     width: 722px;
-    overflow:  -moz-scrollbars-vertical;
+    overflow-y: scroll;
     max-height: 80px;
 }
 ul.facebook_accounts  li{
