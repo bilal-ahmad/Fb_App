@@ -1852,3 +1852,6 @@ ul.facebook_accounts  li{
     float: right;
     margin-right: 12px;
 }
+.w_900{
+    width: 900px !important;
+}
