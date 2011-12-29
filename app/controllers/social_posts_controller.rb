@@ -126,6 +126,12 @@ class SocialPostsController < ApplicationController
     @social_post = SocialPost.find_by_post_type("welcome")
   end
 
+  def edit_default_post
+    @social_post = SocialPost.find_by_post_type("default")
+  end
+
+
+
   def update_welcome_post
     @social_post = SocialPost.find_by_post_type("welcome")
     respond_to do |format|
@@ -134,6 +140,19 @@ class SocialPostsController < ApplicationController
         format.json { head :ok }
       else
         format.html { render action: "edit_welcome_post" }
+        format.json { render json: @social_post.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_default_post
+    @social_post = SocialPost.find_by_post_type("default")
+    respond_to do |format|
+      if @social_post.update_attributes(params[:social_post])
+        format.html { render action: "edit_default_post" , :notice => 'Default post was successfully drafted.' }
+        format.json { head :ok }
+      else
+        format.html { render action: "edit_default_post" }
         format.json { render json: @social_post.errors, status: :unprocessable_entity }
       end
     end

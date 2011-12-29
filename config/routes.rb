@@ -84,7 +84,9 @@ FacebookApp::Application.routes.draw do
   match '/new_photo_post' => 'social_posts#new_photo_post', :as => :new_photo_post
   match '/photo_post' => 'social_posts#photo_post'
   match '/edit_welcome_post' => 'social_posts#edit_welcome_post', :as => :edit_welcome_post
+  match '/edit_default_post' => 'social_posts#edit_default_post', :as => :edit_default_post
   match '/update_welcome_post' => 'social_posts#update_welcome_post', :as => :update_welcome_post
+  match '/update_default_post' => 'social_posts#update_default_post', :as => :update_default_post
   match '/post' => 'social_posts#post'
   match 'validate_user' => 'home#validate_user', :as => :validate_user
   match 'post_to_wall' => 'social_posts#ajax_post', :as => :post_to_wall

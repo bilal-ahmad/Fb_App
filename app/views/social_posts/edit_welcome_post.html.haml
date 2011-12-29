@@ -7,5 +7,8 @@
           %br/
           = link_to 'Create Post', new_social_post_path
           = link_to '| Show All', social_posts_path
-        = render 'welcome_form'
+        - if @social_post.blank?
+          There is no welcome post.
+        - else
+          = render 'welcome_form'
 
