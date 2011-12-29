@@ -44,4 +44,4 @@
               %td= social_post.photo_path
               %td= link_to 'Show', social_post
               %td= link_to 'Edit', edit_social_post_path(social_post)
-              %td= link_to 'Destroy', social_post, confirm: 'Are you sure?', method: :delete
+              %td= link_to 'Destroy', social_post, confirm: 'Are you sure?', method: :delete, :remote => true

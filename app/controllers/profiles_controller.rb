@@ -11,7 +11,8 @@ class ProfilesController < ApplicationController
   end
 
   def index
-    @profiles = Profile.all
+    #@profiles = Profile.all
+    @profiles = Profile.paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -23,7 +24,9 @@ class ProfilesController < ApplicationController
   # DELETE /profiles/1.json
   def destroy
     @profile = Profile.find(params[:id])
+    @profile.user.destroy
     @profile.destroy
+
 
     respond_to do |format|
       format.html { redirect_to profiles_url }

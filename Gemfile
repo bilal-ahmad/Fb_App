@@ -17,6 +17,7 @@ gem 'carrierwave'
 gem 'heroku'
 gem 'pg'
 #gem 'taps'
+gem 'will_paginate', '~> 3.0'
 
 group :development do
   gem 'mysql'
@@ -25,6 +26,7 @@ end
 group :production do
   gem "pg"
 end
+
 
 # Gems used only for assets and not required
 # in production environments by default.

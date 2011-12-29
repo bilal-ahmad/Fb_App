@@ -31,6 +31,7 @@ class SocialPostsController < ApplicationController
   # GET /social_posts/new.json
   def new
     @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    @facebook_accounts = Profile.find_all_by_authorize true
     @social_post = SocialPost.new
 
     respond_to do |format|
@@ -42,15 +43,18 @@ class SocialPostsController < ApplicationController
   # GET /social_posts/1/edit
   def edit
     @social_post = SocialPost.find(params[:id])
+    @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    @facebook_accounts = Profile.find_all_by_authorize true
   end
 
   # POST /social_posts
   # POST /social_posts.json
   def create
     @social_post = SocialPost.new(params[:social_post])
+    @facebook_accounts = Profile.find_all_by_authorize true
 
     respond_to do |format|
-      if params[:countries].present?
+      if params[:countries].present? or params[:facebook_accounts].present?
         if @social_post.save
           if params[:sap].present?
             post(params)
@@ -75,6 +79,7 @@ class SocialPostsController < ApplicationController
   # PUT /social_posts/1.json
   def update
     @social_post = SocialPost.find(params[:id])
+    @facebook_accounts = Profile.find_all_by_authorize true
 
     respond_to do |format|
       if @social_post.update_attributes(params[:social_post])
@@ -136,48 +141,76 @@ class SocialPostsController < ApplicationController
 
 
 
-  def post(social_post)
+  def post(params)
     Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
-    name = params[:social_post][:name]
-    link = params[:social_post][:link]
-    caption = params[:social_post][:caption]
-    description = params[:social_post][:description]
-    picture = params[:social_post][:picture]
-    countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
-    countries.each do |country|
-      countries.first == "all" ? (user =  Profile.find_all_by_authorize(true)) : (user =  Profile.find_all_by_country_and_authorize(country, true))
-      if !user.nil? and user.count == 1
-        @graph = Koala::Facebook::API.new(user.first.oauth_token)
-        begin
-          @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-        rescue Exception => e
-          case e.message
-            when /Duplicate status message/
-              # handle dup code
-            when /Error validating access token/
-              user.update_attribute(:authorize, 0)
-            else
-              raise e
+    options = {
+        :name => params[:social_post][:name],
+        :link => params[:social_post][:link],
+        :caption => params[:social_post][:caption],
+        :description => params[:social_post][:description],
+        :picture => params[:social_post][:picture]
+    }
+    if params[:facebook_accounts].nil?
+      countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
+      countries.each do |country|
+        countries.first == "all" ? (user =  Profile.find_all_by_authorize(true)) : (user =  Profile.find_all_by_country_and_authorize(country, true))
+        if !user.nil? and user.count == 1
+          post_to_wall(user, options)
+        elsif !user.nil? and user.count > 1
+          users = user
+          users.each do |user|
+            post_to_wall(user, options)
           end
         end
-      elsif !user.nil? and user.count > 1
-        users = user
-        users.each do |user|
-          @graph = Koala::Facebook::GraphAPI.new(user.oauth_token)
-          begin
-            @graph.put_wall_post( description, {:name => name, :link => link, :caption => caption,  :picture => picture})
-          rescue Exception => e
-            case e.message
-              when /Duplicate status message/
-                e.message
-              # handle dup code
-              when /Error validating access token/
-                user.update_attribute(:authorize, 0)
-              else
-                raise e
-            end
-          end
-        end
+      end
+    else
+      if params[:facebook_accounts].size > 1
+        facebook_accounts = params[:facebook_accounts].join(",")
+      else
+        facebook_accounts = params[:facebook_accounts].first
+      end
+      fb_users = Profile.where("id IN (#{facebook_accounts})")
+      fb_users.each do |user|
+        post_to_wall(user, options)
+      end
+    end
+  end
+
+  def ajax_post
+    if params.present?
+      Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
+      post_type = params[:post_type]
+      users = params[:users].join(",") if params[:users].present?
+      users.present? and users.size > 1 ? (users =  Profile.where("id IN (#{users})")) : (users =  Profile.where("id IN (#{params[:users].first})"))
+      post = SocialPost.find_all_by_post_type(post_type).first
+      options = {
+          :name => post.name,
+          :link => post.link,
+          :caption => post.caption,
+          :description => post.description,
+          :picture => post.picture
+      }
+      users.each do |user|
+        post_to_wall(user, options)
+      end
+      render json: "true"
+    end
+
+  end
+
+
+  def post_to_wall(user, options)
+    @graph = Koala::Facebook::API.new(user.oauth_token)
+    begin
+      @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
+    rescue Exception => e
+      case e.message
+        when /Duplicate status message/
+          # handle dup code
+        when /Error validating access token/
+          user.update_attribute(:authorize, false)
+        else
+          raise e
       end
     end
   end

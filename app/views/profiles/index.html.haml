@@ -1,19 +1,24 @@
+%script
+  :plain
+
 .page
   #primary
     .text
       %h1 Profiles
       %br/
+      = will_paginate @profiles
       %table.posts
         %tr
           %th User
           %th Name
           %th Email
           %th image
-          -#%th Location
-          %th City
-          %th Country
+          %th Location
+          -#%th City
+          -#%th Country
           %th Authorize
           %th Created
+          %th
           %th
           -#%th
         - i = 0
@@ -23,12 +28,15 @@
             %td= "#{profile.first_name.to_s} #{profile.last_name.to_s}"
             %td= profile.user.email
             %td= image_tag(profile.image)
-            -#%td= profile.location
-            %td= profile.city
-            %td= profile.country
+            %td= profile.location
+            -#%td= profile.city
+            -#%td= profile.country
             %td= profile.authorize
             %td= profile.created_at.strftime("%m/%d/%Y")
+            %td= link_to 'Post', "javascript:social_post(#{profile.id})"
             %td= link_to 'Destroy', profile, confirm: 'Are you sure?', method: :delete
             -#%td= link_to 'Show', profile
             -#%td= link_to 'Settings', edit_profile_path(profile)
           - i = i +1
+
+

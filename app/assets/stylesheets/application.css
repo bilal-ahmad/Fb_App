@@ -354,7 +354,7 @@ a.button, form button {
     border: 1px solid #b20801;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    background: #e41b24 url(../images/layout/bg-grad-red.gif) 0 100% repeat-x;
+    background: #e41b24 0 100% repeat-x;
     font: bold 14px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-transform: uppercase;
     text-align: center;
@@ -602,7 +602,7 @@ td.cta a:hover {
     content: " ";
 }
 #header {
-    background: url("assets/bg_nav.jpg") repeat-x scroll 0 -38px #DA251C;
+    background: 0 -38px #DA251C;
     font-weight: bold;
     font-size: 12px;
     line-height: 1;
@@ -1837,4 +1837,18 @@ table.posts th{
 .w_100{
     width: 800px !important;
 }
-
+.facebook_accounts{
+    width: 722px;
+    overflow:  -moz-scrollbars-vertical;
+    max-height: 80px;
+}
+ul.facebook_accounts  li{
+   width: 100% !important;
+}ul.facebook_accounts  li label{
+   width: 100%;
+   float: left;
+}
+.pagination{
+    float: right;
+    margin-right: 12px;
+}

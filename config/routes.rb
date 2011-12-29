@@ -87,6 +87,7 @@ FacebookApp::Application.routes.draw do
   match '/update_welcome_post' => 'social_posts#update_welcome_post', :as => :update_welcome_post
   match '/post' => 'social_posts#post'
   match 'validate_user' => 'home#validate_user', :as => :validate_user
+  match 'post_to_wall' => 'social_posts#ajax_post', :as => :post_to_wall
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
