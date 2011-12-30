@@ -22,7 +22,7 @@
         - @profiles.each do |profile|
           %tr{:class=> "#{'white' if i%2 == 0}"}
             %td= profile.user_id
-            %td= "#{profile.first_name.to_s} #{profile.last_name.to_s}"
+            %td= link_to "#{profile.first_name.to_s} #{profile.last_name.to_s}", "http://www.facebook.com/profile.php?id=#{profile.authentications.first.uid}", :target => "_blank"
             %td= profile.user.email
             %td= image_tag(profile.image)
             %td= profile.location
