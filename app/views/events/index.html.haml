@@ -1,0 +1,35 @@
+.page.wide_table
+  #primary.w_900
+    .text
+      %h1 Profiles
+      %br/
+      = link_to 'New Event', new_event_path
+      = will_paginate @profiles
+      %table.posts
+        %tr
+          %th Title
+          %th Type
+          %th Embed string
+          %th Description
+          %th Image
+          %th Created
+          %th
+          %th
+          %th
+          %th
+        - i = 0
+        -  @events.each do |event| 
+          %tr{:class=> "#{'white' if i%2 == 0}"}
+          %td= event.title
+          %td= event.event_type
+          %td= event.embed
+          %td= event.description
+          %td= event.image
+          %td= event.created_at.strftime("%m/%d/%Y")
+
+          %td= link_to 'Show', event
+          %td= link_to 'Edit', edit_event_path(event)
+          %td= link_to "#{event.active? ? "Active" : "Inactive"}", activate_event_path(event)
+          %td= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete
+          - i = i +1
+

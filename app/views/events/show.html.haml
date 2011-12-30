@@ -1,0 +1,10 @@
+#content
+  .page
+    #primary{:style => "width:100%;"}
+      .text{:style => "text-align: center !important;"}
+        %p
+          = @event.embed.html_safe
+        %p
+          = @event.description
+
+

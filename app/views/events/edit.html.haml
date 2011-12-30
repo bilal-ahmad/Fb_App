@@ -1,0 +1,10 @@
+.page
+  #primary
+    .text
+      %fieldset.col-3
+        %legend
+          %h1 Edit Event
+          %br/
+          = link_to 'Create Post', new_event_path
+          = link_to '| Show All', events_path
+        = render 'form'

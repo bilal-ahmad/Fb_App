@@ -2,4 +2,4 @@
   .page{:style => "text-align: center !important;"}
     #primary{:style => "width:100%;"}
       .text
-        = ("<iframe width='600' height='350' src='http://www.youtube.com/embed/9i01Jnifla8' frameborder='0' allowfullscreen></iframe>").html_safe
+        = @video.embed.html_safe if @video

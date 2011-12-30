@@ -1,0 +1,35 @@
+= form_for(@event) do |f|
+  %ul.no_border
+    %li.col-span-2
+      %label.input-text
+        %span.label.hd Event
+      %ul.posts
+        %li.col-span-2
+          %label.input-text
+            %span.label Title
+            = f.text_field :title, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Type
+            = f.text_field :event_type, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Embed String
+            = f.text_area :embed, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Image
+            = f.text_field :image, :class => "txarea1"
+        %li
+          %label.input-text
+            %span.label Description
+            = f.text_area :description, :class => "txarea1"
+  %p.buttons{:style => "margin-top:0px;"}
+    %button.primary-call{:type => "submit"} Save
+    = link_to 'Back', social_apps_path
+
+
+
+
+
+

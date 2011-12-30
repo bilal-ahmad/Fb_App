@@ -1,4 +1,18 @@
 FacebookApp::Application.routes.draw do
+  resources :events
+
+  get "events/index"
+
+  get "events/show"
+
+  get "events/edit"
+
+  get "events/update"
+
+  get "events/create"
+
+  get "events/new"
+
   resources :social_posts
 
   resources :settings
@@ -90,6 +104,7 @@ FacebookApp::Application.routes.draw do
   match '/post' => 'social_posts#post'
   match 'validate_user' => 'home#validate_user', :as => :validate_user
   match 'post_to_wall' => 'social_posts#ajax_post', :as => :post_to_wall
+  match '/activate_event/:id' => 'events#activate_event', :as => :activate_event
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
