@@ -5,10 +5,6 @@
     = javascript_include_tag :application, "jquery-1.7.1.min.js","jquery.jcarousel.pack", "func.js", "slider"
     = csrf_meta_tag
     = yield(:head)
-  %noscript
-    %meta{:content => "0;url=https://an.blamads.com/no_js/EL", "http-equiv" => "refresh"}/
-  %script{:src => "https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js", :type => "text/javascript"}
-  %script{:src => "https://gateways.s3.amazonaws.com/gateway/aff_13071/g2527/flash_gw.js", :type => "text/javascript"}
   %link{:href => "http://www.blogger.com/profile/12388298149888111802", :rel => "me"}/
   %link{:href => "http://www.blogger.com/openid-server.g", :rel => "openid.server"}/
   :css
@@ -35,6 +31,29 @@
     #navbar { display: none; }
     #navbar-iframe { display: none; }
   %body
-    = render "layouts/header" if admin_signed_in?
-    #content
-      =yield
+    - if admin_signed_in?
+      #header{:style => "margin-top:0px !important;"}
+        .page
+          #utilities
+            %ul
+              - if admin_signed_in?
+                %li{:class => "#{active_class("home")}"}
+                  = link_to 'Home', root_path
+                %li{:class => "#{active_class("events")}"}
+                  = link_to 'Events', events_path
+                %li{:class => "#{active_class("social_posts")}"}
+                  = link_to 'Posts', social_posts_path
+                %li{:class => "#{active_class("profiles")}"}
+                  = link_to 'Profiles', profiles_path
+                %li{:class => "#{active_class("sessions")}"}
+                  = link_to "Log Out", destroy_user_session_path, :method => :delete
+
+              -else
+                %li{:class => "#{active_class("home")}"}
+                  = link_to 'Home', root_path
+                %li
+                  = link_to 'Login', new_user_session_path
+                -#%li
+                =# link_to 'Sign Up', new_user_registration_path
+      #content
+        =yield
