@@ -54,7 +54,7 @@ class SocialPostsController < ApplicationController
     @facebook_accounts = Profile.find_all_by_authorize true
 
     respond_to do |format|
-      if params[:countries].present? or params[:facebook_accounts].present?
+      if params[:countries].present?
         if @social_post.save
           if params[:sap].present?
             post(params)
@@ -79,26 +79,26 @@ class SocialPostsController < ApplicationController
   # PUT /social_posts/1.json
   def update
     @social_post = SocialPost.find(params[:id])
-    @facebook_accounts = Profile.find_all_by_authorize true
-    if params[:countries].present? or params[:facebook_accounts].present?
-      respond_to do |format|
-        if @social_post.update_attributes(params[:social_post])
-          if params[:sap].present?
-            @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-            post(params)
+    @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    respond_to do |format|
+      if params[:countries].present?
+          if @social_post.update_attributes(params[:social_post])
+            if params[:sap].present?
+              post(params)
+              format.html { render action: "new" , :notice => 'Social post was successfully posted to wall and drafted.' }
+            end
             format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+            format.json { head :ok }
+          else
+            format.html { render action: "edit" }
+            format.json { render json: @social_post.errors, status: :unprocessable_entity }
           end
-          format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
-          format.json { head :ok }
-        else
-          format.html { render action: "edit" }
-          format.json { render json: @social_post.errors, status: :unprocessable_entity }
-        end
+      else
+        flash[:error] = "Select the Country"
+        format.html { render action: "edit" }
       end
-    else
-      flash[:error] = "Select the country or Facebook Account"
-      format.html { render action: "edit" }
     end
+
   end
 
   # DELETE /social_posts/1
@@ -176,30 +176,38 @@ class SocialPostsController < ApplicationController
         :description => params[:social_post][:description],
         :picture => params[:social_post][:picture]
     }
-    if params[:facebook_accounts].nil?
-      countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
-      countries.each do |country|
-        countries.first == "all" ? (user =  Profile.find_all_by_authorize(true)) : (user =  Profile.find_all_by_country_and_authorize(country, true))
-        if !user.nil? and user.count == 1
+    countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
+    countries.each do |country|
+      countries.first == "all" ? (user =  Profile.find_all_by_authorize(true)) : (user =  Profile.find_all_by_country_and_authorize(country, true))
+      if !user.nil? and user.count == 1
+        post_to_wall(user, options)
+      elsif !user.nil? and user.count > 1
+        users = user
+        users.each do |user|
           post_to_wall(user, options)
-        elsif !user.nil? and user.count > 1
-          users = user
-          users.each do |user|
-            post_to_wall(user, options)
-          end
         end
       end
-    else
-      if params[:facebook_accounts].size > 1
-        facebook_accounts = params[:facebook_accounts].join(",")
-      else
-        facebook_accounts = params[:facebook_accounts].first
-      end
-      fb_users = Profile.where("id IN (#{facebook_accounts})")
-      fb_users.each do |user|
-        post_to_wall(user, options)
-      end
     end
+  end
+
+
+  def post_by_person
+    #@facebook_accounts = Profile.find_all_by_authorize true
+
+    #if params[:facebook_accounts].nil?
+
+    #else
+    #  if params[:facebook_accounts].size > 1
+    #    facebook_accounts = params[:facebook_accounts].join(",")
+    #  else
+    #    facebook_accounts = params[:facebook_accounts].first
+    #  end
+    #  fb_users = Profile.where("id IN (#{facebook_accounts})")
+    #  fb_users.each do |user|
+    #    post_to_wall(user, options)
+    #  end
+    #end
+
   end
 
   def ajax_post
@@ -232,11 +240,11 @@ class SocialPostsController < ApplicationController
     rescue Exception => e
       case e.message
         when /Duplicate status message/
-          # handle dup code
+          user.update_attribute(:error, e.message)
         when /Error validating access token/
-          user.update_attribute(:authorize, false)
+          user.update_attributes(:authorize => false, :error => e.message)
         else
-          raise e
+          user.update_attribute(:error, e.message)
       end
     end
   end

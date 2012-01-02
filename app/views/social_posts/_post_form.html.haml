@@ -1,7 +1,6 @@
 = form_for(@social_post) do |f|
   = f.hidden_field :post_type, :value => "post"
   %ul.no_border
-    = flash_messages
     = error_messages(@social_post)
     %li.col-span-2
       %label.input-text
@@ -17,21 +16,6 @@
         %label
           = check_box_tag "countries[]", "all", false
           %span.remember_me All
-    %li.col-span-2
-      %label.input-text
-        %span.label.hd
-          %a{:id => "fb_div", :onclick => "javascript:$('.facebook_accounts').toggle();"} Facebook Accounts
-    %ul.facebook_accounts
-      - if !@facebook_accounts.blank?
-        - @facebook_accounts.each do |facebook_account|
-          %li
-            %label
-              = check_box_tag "facebook_accounts[]", "#{facebook_account.id}", false
-              %span.remember_me
-                =facebook_account.location.present? ? facebook_account.first_name+" "+facebook_account.last_name+", "+facebook_account.location : facebook_account.first_name+" "+facebook_account.last_name
-      - else
-        %li
-          %label No Authorize Account
     %li.col-span-2.clear
       %label.input-text
         %span.label.hd Post
