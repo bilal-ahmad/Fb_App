@@ -42,7 +42,7 @@ class AuthenticationsController < ApplicationController
     authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
     if authentication and !authentication.user.nil?
       if !authentication.user.profile.authorize?
-          authentication.user.profile.update_attributes(:oauth_token => omniauth[:credentials][:token], :authorize => true)
+          authentication.user.profile.update_attributes(:oauth_token => omniauth[:credentials][:token], :authorize => true, :app_status => true)
           welcome_post(omniauth[:credentials][:token])
       end
       flash[:notice] = "Signed in successfully"
