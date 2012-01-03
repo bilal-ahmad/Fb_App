@@ -93,7 +93,7 @@ class AuthenticationsController < ApplicationController
                     :last_name => last_name, :image =>image,
                     :location => location, :city => city,
                     :country => country.strip, :profile_link => profile_link,
-                    :gender => gender, :time_zone => time_zone)
+                    :gender => gender, :time_zone => time_zone, :app_status => true)
   end
 
   def failure
