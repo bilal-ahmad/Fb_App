@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
 
   def index
     #@profiles = Profile.all
-    @profiles = Profile.paginate(:page => params[:page])
+    @profiles = Profile.where("app_status = ?", true).paginate(:page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
