@@ -85,10 +85,13 @@ class SocialPostsController < ApplicationController
           if @social_post.update_attributes(params[:social_post])
             if params[:sap].present?
               post(params)
-              format.html { render action: "new" , :notice => 'Social post was successfully posted to wall and drafted.' }
-            end
-            format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+              flash[:notice] = 'Social post was successfully posted to wall and drafted.'
+              format.html { render action: "edit"  }
+            else
+            flash[:notice] = 'Social post was successfully drafted.'
+            format.html { render action: "edit"  }
             format.json { head :ok }
+            end
           else
             format.html { render action: "edit" }
             format.json { render json: @social_post.errors, status: :unprocessable_entity }
@@ -178,7 +181,7 @@ class SocialPostsController < ApplicationController
     }
     countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
     countries.each do |country|
-      countries.first == "all" ? (user =  Profile.find_all_by_authorize(true)) : (user =  Profile.find_all_by_country_and_authorize(country, true))
+      countries.first == "all" ? (user =  Profile.find_all_by_authorize_and_app_status(true, true)) : (user =  Profile.find_all_by_country_and_authorize_and_app_status(country, true, true))
       if !user.nil? and user.count == 1
         post_to_wall(user, options)
       elsif !user.nil? and user.count > 1
