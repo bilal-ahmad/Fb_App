@@ -37,7 +37,6 @@ class SocialAppsController < ApplicationController
   # GET /social_apps/1/edit
   def edit
     @social_app = SocialApp.find(params[:id])
-    @social_app.build_setting
   end
 
   # POST /social_apps
