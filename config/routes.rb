@@ -94,7 +94,10 @@ FacebookApp::Application.routes.draw do
   #     resources :products
   #   end
   match '/auth/:provider/callback' => 'authentications#create'
+  match '/auth/:app_name' => 'authentications#facebook_authorize'
+  match '/auth/:app_name/create' => 'authentications#create'
   match '/post_to_facebook' => 'user_social_accounts#post_to_facebook'
+  match '/de_authorize_facebook_app' => 'authentications#de_authorize_facebook_app'
   match '/new_photo_post' => 'social_posts#new_photo_post', :as => :new_photo_post
   match '/photo_post' => 'social_posts#photo_post'
   match '/edit_welcome_post' => 'social_posts#edit_welcome_post', :as => :edit_welcome_post
@@ -105,6 +108,7 @@ FacebookApp::Application.routes.draw do
   match 'validate_user' => 'home#validate_user', :as => :validate_user
   match 'post_to_wall' => 'social_posts#ajax_post', :as => :post_to_wall
   match '/activate_event/:id' => 'events#activate_event', :as => :activate_event
+  match 'facebook_error/:error' => 'social_apps#facebook_error', :as => :facebook_error
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.

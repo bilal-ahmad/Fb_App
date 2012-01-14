@@ -43,7 +43,7 @@ class SocialAppsController < ApplicationController
   # POST /social_apps.json
   def create
 
-    params[:social_app][:user_id] = current_user.id
+    params[:social_app][:user_id] = current_admin.id
     params[:social_app][:setting_attributes][:permissions] = set_permissions(params[:social_app][:setting_attributes])
     @social_app = SocialApp.new(params[:social_app])
 
@@ -83,6 +83,9 @@ class SocialAppsController < ApplicationController
     end
   end
 
+  def facebook_error
+    @error = params[:error]
+  end
   # DELETE /social_apps/1
   # DELETE /social_apps/1.json
   def destroy

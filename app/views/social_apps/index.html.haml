@@ -6,17 +6,17 @@
       = link_to 'Create New App', new_social_app_path
       %table
         %tr
-          %th User
+          %th No
           %th Name
           %th Provider
           %th
           %th
           %th
-        - i = 0
+        - i = 1
         - @social_apps.each do |social_app|
           %tr{:class=> "#{'white' if i%2 == 0}"}
-            %td= social_app.user_id
-            %td= social_app.name
+            %td= i
+            %td= link_to social_app.name, profiles_path(:app_id => social_app.id)
             %td= social_app.provider.titleize
             %td= link_to 'Show', social_app
             %td= link_to 'Settings', edit_social_app_path(social_app)

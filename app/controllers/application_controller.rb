@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
       info = omniauth['info']["#{attr}"]
     elsif !omniauth['extra'].blank? and !omniauth['extra']['raw_info'].blank? and !omniauth['extra']['raw_info']["#{attr}"].blank?
       info = omniauth['extra']['raw_info']["#{attr}"]
+    elsif !omniauth["#{attr}"].blank?
+      info = omniauth["#{attr}"]
     end
     info
   end

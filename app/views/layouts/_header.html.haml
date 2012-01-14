@@ -5,6 +5,8 @@
         - if admin_signed_in?
           %li{:class => "#{active_class("home")}"}
             = link_to 'Home', root_path
+          %li{:class => "#{active_class("social_apps")}"}
+            = link_to 'Apps', social_apps_path
           %li{:class => "#{active_class("events")}"}
             = link_to 'Events', events_path
           %li{:class => "#{active_class("social_posts")}"}
