@@ -89,7 +89,7 @@ class AuthenticationsController < ApplicationController
   def facebook_authorize
     Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
     @app = SocialApp.find_by_name(params[:app_name])
-    callback_url = "http://localhost:3000/auth/kill-thrill/create"
+    callback_url = @app.setting.callback_url
     app_id = @app.setting.facebook_id
     app_secret = @app.setting.facebook_secret
     @oauth = Koala::Facebook::OAuth.new(app_id, app_secret, callback_url)
