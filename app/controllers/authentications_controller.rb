@@ -59,7 +59,7 @@ class AuthenticationsController < ApplicationController
 
       #sign_in_and_redirect(:user, authentication.user)
       sign_in(:user, authentication.user)
-      redirect_to get_auth_app_url
+#      redirect_to get_auth_app_url
     else
       user = User.new
       user.apply_omniauth(omniauth)
@@ -70,7 +70,7 @@ class AuthenticationsController < ApplicationController
         welcome_post(oauth_token)
         flash[:notice] = "Successfully registered"
         sign_in(:user, user)
-        redirect_to get_auth_app_url
+        #redirect_to get_auth_app_url
       else
         session[:omniauth] = omniauth.except('extra')
         session[:omniauth_email] = omniauth['extra'] && omniauth['extra']['user_hash'] && omniauth['extra']['user_hash']['email']
