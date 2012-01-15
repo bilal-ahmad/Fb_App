@@ -105,8 +105,7 @@ class AuthenticationsController < ApplicationController
     @app = SocialApp.find_by_name(params[:app_name])
     Rails.logger.info "******************"
     Rails.logger.info params[:app_name]
-    #callback_url = @app.setting.callback_url
-    callback_url = "http://stark-robot-3518.herokuapp.com/auth/#{params[:app_name]}/create"
+    callback_url = @app.setting.callback_url
     app_id = @app.setting.facebook_id
     app_secret = @app.setting.facebook_secret
     @oauth = Koala::Facebook::OAuth.new(app_id, app_secret, callback_url)
