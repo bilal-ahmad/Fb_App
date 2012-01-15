@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   def apply_omniauth(omniauth)
     provider = omniauth['provider']
     social_account_user_id = omniauth['uid']
-    authentications.build(:provider => provider, :uid => social_account_user_id)
+    social_app_id = omniauth['social_app_id']
+    authentications.build(:provider => provider, :uid => social_account_user_id, :social_app_id => social_app_id)
   end
 
 

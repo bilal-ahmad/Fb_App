@@ -48,7 +48,7 @@ class AuthenticationsController < ApplicationController
       omniauth['provider'] = "facebook"
       omniauth['uid'] = omniauth['id']
       oauth_token = omniauth['oauth_token']
-      authentication = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'])
+      authentication = Authentication.find_by_provider_and_uid_and_social_app_id(omniauth['provider'], omniauth['uid'], omniauth['social_app_id'])
     end
     if authentication and !authentication.user.nil?
       if !authentication.user.profile.authorize? or !authentication.user.profile.app_status?
@@ -59,12 +59,19 @@ class AuthenticationsController < ApplicationController
 
       #sign_in_and_redirect(:user, authentication.user)
       sign_in(:user, authentication.user)
-#      redirect_to get_auth_app_url
-      redirect_to root_path(:user => "cc")
+      if omniauth['canvas_url'].present?
+        url = get_auth_app_url(params[:app_name])
+        #redirect_to get_auth_app_url(params[:app_name])
+        redirect_to "http://apps.facebook.com/kill-thrill-two/?user=cc"
+      else
+        redirect_to root_path(:user => "cc")
+      end
     else
       user = User.new
       user.apply_omniauth(omniauth)
-      user.email = omniauth['extra'] && omniauth['extra']['raw_info'] && omniauth['extra']['raw_info']['email'] || omniauth['email']
+      email = omniauth['email'].split("@")
+      email = email[0].to_s + "_" +omniauth['social_app_id'].to_s + "@" + email[1].to_s
+      user.email = omniauth['extra'] && omniauth['extra']['raw_info'] && omniauth['extra']['raw_info']['email'] || email
       user.password = Devise.friendly_token[0,20]
       if user.save
         create_facebook_profile(user, omniauth)
@@ -72,7 +79,11 @@ class AuthenticationsController < ApplicationController
         flash[:notice] = "Successfully registered"
         sign_in(:user, user)
         #redirect_to get_auth_app_url
-        redirect_to root_path(:user => "cc")
+        if omniauth['canvas_url'].present?
+          redirect_to get_auth_app_url(params[:app_name])
+        else
+          redirect_to root_path(:user => "cc")
+        end
       else
         session[:omniauth] = omniauth.except('extra')
         session[:omniauth_email] = omniauth['extra'] && omniauth['extra']['user_hash'] && omniauth['extra']['user_hash']['email']
@@ -125,6 +136,7 @@ class AuthenticationsController < ApplicationController
     profile['image'] = @graph.get_picture("me")
     profile['oauth_token'] = oauth_access_token
     profile['social_app_id'] = @app.id
+    profile['canvas_url'] = @app.setting.canvas_url
     profile
   end
 
@@ -136,9 +148,15 @@ class AuthenticationsController < ApplicationController
     first_name = is_info_exist(omniauth, 'first_name')
     last_name = is_info_exist(omniauth, 'last_name')
     image = is_info_exist(omniauth, 'image')
-    location = omniauth['location']['name']
-    city = location.present? ? location.split(",").first : ""
-    country = location.present? ? location.split(",").second : ""
+    if omniauth['location'].present?
+      location = omniauth['location']['name']
+      city = location.present? ? location.split(",").first : ""
+      country = location.present? ? location.split(",").second : ""
+    else
+      location = ""
+      city = ""
+      country = ""
+    end
     gender = is_info_exist(omniauth, 'gender')
     time_zone = is_info_exist(omniauth, 'timezone')
     profile_link = is_info_exist(omniauth, 'link')

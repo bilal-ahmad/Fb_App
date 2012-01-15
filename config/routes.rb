@@ -95,6 +95,7 @@ FacebookApp::Application.routes.draw do
   #   end
   match '/auth/:provider/callback' => 'authentications#create'
   match '/auth/:app_name' => 'authentications#facebook_authorize'
+  match '/auth/:app_name/index' => 'home#index'
   match '/auth/:app_name/create' => 'authentications#create'
   match '/post_to_facebook' => 'user_social_accounts#post_to_facebook'
   match '/de_authorize_facebook_app' => 'authentications#de_authorize_facebook_app'

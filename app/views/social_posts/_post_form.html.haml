@@ -5,6 +5,16 @@
     = error_messages(@social_post)
     %li.col-span-2
       %label.input-text
+        %span.label.hd Select Application
+    %ul.permissions
+      - @apps.each do |app|
+        %li
+          %label
+            = check_box_tag "apps[]", "#{app.id}", false
+            %span.remember_me
+              =app.name
+    %li.col-span-2
+      %label.input-text
         %span.label.hd Select Country
     %ul.permissions
       - @countries.each do |country|

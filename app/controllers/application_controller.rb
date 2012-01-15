@@ -12,19 +12,19 @@ class ApplicationController < ActionController::Base
     info
   end
 
-  def get_oauth_url
+  def get_oauth_url(app)
     if Rails.env.production?
-      "http://stark-robot-3518.herokuapp.com/auth/facebook"
+      "http://stark-robot-3518.herokuapp.com/auth/#{app}"
     elsif Rails.env.development?
-      "http://localhost:3000/auth/facebook"
+      "http://localhost:3000/auth/#{app}"
     end
   end
 
-  def get_auth_app_url
+  def get_auth_app_url(app)
     if Rails.env.production?
-      app_root_url = "http://apps.facebook.com/all-shocking-newz/?user=cc"
+      app_root_url = "http://apps.facebook.com/#{app}/index/?user=cc"
     elsif Rails.env.development?
-      app_root_url = "http://apps.facebook.com/317467998278508/?user=cc"
+      app_root_url = "http://apps.facebook.com/#{app}/index/?user=cc"
     end
   end
 

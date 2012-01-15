@@ -31,6 +31,7 @@ class SocialPostsController < ApplicationController
   # GET /social_posts/new.json
   def new
     @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    @apps = SocialApp.all
     @facebook_accounts = Profile.find_all_by_authorize true
     @social_post = SocialPost.new
 
@@ -44,6 +45,7 @@ class SocialPostsController < ApplicationController
   def edit
     @social_post = SocialPost.find(params[:id])
     @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    @apps = SocialApp.all
     @facebook_accounts = Profile.find_all_by_authorize true
   end
 
@@ -179,7 +181,30 @@ class SocialPostsController < ApplicationController
         :description => params[:social_post][:description],
         :picture => params[:social_post][:picture]
     }
-    countries = (params[:countries].present? and params[:countries] == "all") ? "all" : params[:countries]
+    post_by_countries(params[:countries], options)
+    post_by_app(params[:apps].join(","), options)
+
+  end
+
+  def post_by_app(apps, options)
+    apps = SocialApp.where("id IN (?)", apps)
+    apps.each do |app|
+      users =  Profile.where("social_app_id AND authorize AND app_status", app.id, true, true)
+      users.each do |user|
+        if !user.nil? and user.count == 1
+          post_to_wall(user, options)
+        elsif !user.nil? and user.count > 1
+          users = user
+          users.each do |user|
+            post_to_wall(user, options)
+          end
+        end
+      end
+    end
+  end
+
+  def post_by_countries(countries, options)
+    countries = (countries.present? and countries == "all") ? "all" : countries
     countries.each do |country|
       countries.first == "all" ? (user =  Profile.find_all_by_authorize_and_app_status(true, true)) : (user =  Profile.find_all_by_country_and_authorize_and_app_status(country, true, true))
       if !user.nil? and user.count == 1
