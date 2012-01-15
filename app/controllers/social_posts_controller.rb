@@ -56,7 +56,7 @@ class SocialPostsController < ApplicationController
     @facebook_accounts = Profile.find_all_by_authorize true
 
     respond_to do |format|
-      if params[:countries].present?
+      if params[:countries].present? or params[:apps].present?
         if @social_post.save
           if params[:sap].present?
             post(params)
@@ -82,17 +82,19 @@ class SocialPostsController < ApplicationController
   def update
     @social_post = SocialPost.find(params[:id])
     @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    @apps = SocialApp.all
+
     respond_to do |format|
-      if params[:countries].present?
+      if params[:countries].present? or params[:apps].present?
           if @social_post.update_attributes(params[:social_post])
             if params[:sap].present?
               post(params)
               flash[:notice] = 'Social post was successfully posted to wall and drafted.'
               format.html { render action: "edit"  }
             else
-            flash[:notice] = 'Social post was successfully drafted.'
-            format.html { render action: "edit"  }
-            format.json { head :ok }
+              flash[:notice] = 'Social post was successfully drafted.'
+              format.html { render action: "edit"  }
+              format.json { head :ok }
             end
           else
             format.html { render action: "edit" }
@@ -181,7 +183,7 @@ class SocialPostsController < ApplicationController
         :description => params[:social_post][:description],
         :picture => params[:social_post][:picture]
     }
-    post_by_countries(params[:countries], options)
+    post_by_countries(params[:countries], options) if params[:countries].present?
     post_by_app(params[:apps].join(","), options)
 
   end
@@ -191,14 +193,7 @@ class SocialPostsController < ApplicationController
     apps.each do |app|
       users =  Profile.where("social_app_id AND authorize AND app_status", app.id, true, true)
       users.each do |user|
-        if !user.nil? and user.count == 1
-          post_to_wall(user, options)
-        elsif !user.nil? and user.count > 1
-          users = user
-          users.each do |user|
-            post_to_wall(user, options)
-          end
-        end
+        post_to_wall(user, options)
       end
     end
   end
