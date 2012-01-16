@@ -69,8 +69,9 @@ class AuthenticationsController < ApplicationController
     else
       user = User.new
       user.apply_omniauth(omniauth)
-      email = omniauth['email'].split("@")
-      email = email[0].to_s + "_" +omniauth['social_app_id'].to_s + "@" + email[1].to_s
+      Rails.logger.info "*********************"
+      Rails.logger.info email = omniauth['email']
+      email = omniauth['social_app_id'].to_s +"_"+ email.to_s
       user.email = omniauth['extra'] && omniauth['extra']['raw_info'] && omniauth['extra']['raw_info']['email'] || email
       user.password = Devise.friendly_token[0,20]
       if user.save
