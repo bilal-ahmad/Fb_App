@@ -71,7 +71,7 @@ class AuthenticationsController < ApplicationController
       user.apply_omniauth(omniauth)
       Rails.logger.info "*********************"
       email = omniauth['email']
-      email = omniauth['social_app_id'] + email.to_s
+      email = omniauth['social_app_id'].to_s + email
       Rails.logger.info email
       Rails.logger.info omniauth['social_app_id']
 
