@@ -71,6 +71,7 @@ class SocialAppsController < ApplicationController
   # PUT /social_apps/1.json
   def update
     @social_app = SocialApp.find(params[:id])
+    params[:social_app][:setting_attributes][:permissions] = set_permissions(params[:social_app][:setting_attributes])
 
     respond_to do |format|
       if @social_app.update_attributes(params[:social_app])
