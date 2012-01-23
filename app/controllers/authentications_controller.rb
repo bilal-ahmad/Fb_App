@@ -1,6 +1,8 @@
 class AuthenticationsController < ApplicationController
   before_filter :authenticate_user!, :except => [:create, :link, :add, :get_facebook_profile, :facebook_authorize]
   require "koala"
+  require 'net/http'
+  require 'net/https'
   def index
     @authentications = current_user.authentications if current_user
     respond_to do |format|
@@ -59,10 +61,8 @@ class AuthenticationsController < ApplicationController
 
       #sign_in_and_redirect(:user, authentication.user)
       sign_in(:user, authentication.user)
-      if omniauth['canvas_url'].present?
-        url = get_auth_app_url(params[:app_name])
-        #redirect_to get_auth_app_url(params[:app_name])
-        redirect_to "http://apps.facebook.com/kill-thrill-two/?user=cc"
+      if omniauth['namespace'].present?
+        redirect_to get_auth_app_url(omniauth['namespace'])
       else
         redirect_to root_path(:user => "cc")
       end
@@ -71,7 +71,7 @@ class AuthenticationsController < ApplicationController
       user.apply_omniauth(omniauth)
       Rails.logger.info "*********************"
       email = omniauth['email']
-      email = omniauth['social_app_id'].to_s + email
+      email = "#{omniauth['social_app_id'].to_s}|-|#{email}"
       Rails.logger.info email
       Rails.logger.info omniauth['social_app_id']
 
@@ -82,9 +82,8 @@ class AuthenticationsController < ApplicationController
         welcome_post(oauth_token)
         flash[:notice] = "Successfully registered"
         sign_in(:user, user)
-        #redirect_to get_auth_app_url
-        if omniauth['canvas_url'].present?
-          redirect_to get_auth_app_url(params[:app_name])
+        if omniauth['namespace'].present?
+          redirect_to get_auth_app_url(omniauth['namespace'])
         else
           redirect_to root_path(:user => "cc")
         end
@@ -129,6 +128,7 @@ class AuthenticationsController < ApplicationController
   end
 
 
+
   def get_facebook_profile(code)
     Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
     @app = SocialApp.find_by_name(params[:app_name])
@@ -143,6 +143,8 @@ class AuthenticationsController < ApplicationController
     profile['oauth_token'] = oauth_access_token
     profile['social_app_id'] = @app.id
     profile['canvas_url'] = @app.setting.canvas_url
+    profile['link'] = @app.setting.link
+    profile['namespace'] = @app.setting.namespace
     profile
   end
 

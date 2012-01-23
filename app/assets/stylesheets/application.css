@@ -1769,10 +1769,17 @@ ul.events  li{
     font-weight: bold;
     font-size: 13px;
 }
+table.show_table{
+    background: none !important;
+    border: none !important;
+}
 table.show_table tr{
     padding: 10px;
-
-
+}
+table.show_table tr td {
+    border: 1px solid #EEEEEE;
+    padding: 10px 18px;
+    vertical-align: top;
 }
 .services{
     width: 104.3%;

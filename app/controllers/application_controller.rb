@@ -20,11 +20,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def get_auth_app_url(app)
+  def get_auth_app_url(namespace)
     if Rails.env.production?
-      app_root_url = "http://apps.facebook.com/#{app}/index/?user=cc"
+      app_root_url = "http://apps.facebook.com/#{namespace}/index/?user=cc"
     elsif Rails.env.development?
-      app_root_url = "http://apps.facebook.com/#{app}/index/?user=cc"
+      app_root_url = "http://apps.facebook.com/#{namespace}/index/?user=cc"
     end
   end
 

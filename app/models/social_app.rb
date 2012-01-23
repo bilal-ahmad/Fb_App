@@ -3,5 +3,6 @@ class SocialApp < ActiveRecord::Base
   belongs_to :user
   has_many :profiles
   has_many :authentications
+  validates :name, :uniqueness => true
   accepts_nested_attributes_for :setting
 end

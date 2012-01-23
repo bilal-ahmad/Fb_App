@@ -2,4 +2,15 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      user: "SoicalApp"
+    attributes:
+      social_app:
+        name: ""
+    errors:
+      models:
+        social_app:
+          attributes:
+            name:
+              taken: "Facebook App is already taken"

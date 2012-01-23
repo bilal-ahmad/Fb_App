@@ -23,7 +23,7 @@
           %tr{:class=> "#{'white' if i%2 == 0}"}
             %td= i
             %td= link_to "#{profile.first_name.to_s} #{profile.last_name.to_s}", profile.profile_link, :target => "_blank"
-            %td= profile.user.email
+            %td= profile.user.email.split("|-|").second
             %td= image_tag(profile.image)
             %td= profile.location
             -#%td= profile.city
