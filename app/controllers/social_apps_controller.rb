@@ -47,7 +47,7 @@ class SocialAppsController < ApplicationController
     if fb_application
       params[:social_app][:setting_attributes][:permissions] = set_permissions(params[:social_app][:setting_attributes])
       params[:social_app][:name] = fb_application['name']
-      params[:social_app][:setting_attributes][:callback_url] = "http://localhost:3000/auth/#{fb_application['name']}/create"
+      params[:social_app][:setting_attributes][:callback_url] = get_callback_url(fb_application['name'])
       params[:social_app][:setting_attributes][:icon_url] = fb_application['icon_url']
       params[:social_app][:setting_attributes][:canvas_name] = fb_application['canvas_name']
       params[:social_app][:setting_attributes][:link] = fb_application['link']
