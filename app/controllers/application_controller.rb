@@ -23,8 +23,17 @@ class ApplicationController < ActionController::Base
   def get_auth_app_url(namespace)
     if Rails.env.production?
       app_root_url = "http://apps.facebook.com/#{namespace}/index/?user=cc"
-    elsif Rails.env.development?
+    elsif Rails.env.development? or Rails.env.production?
       app_root_url = "http://apps.facebook.com/#{namespace}/index/?user=cc"
+    end
+  end
+
+  def get_callback_url(app_name)
+    if Rails.env.production?
+      app_root_url = "http://stark-robot-3518.herokuapp.com/auth/#{app_name}/create"
+    elsif Rails.env.development?
+      callback_url = "http://localhost:3000/auth/#{app_name}/create"
+
     end
   end
 
