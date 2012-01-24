@@ -29,11 +29,11 @@ class ApplicationController < ActionController::Base
   end
 
   def get_callback_url(app_name)
-    if Rails.env.production?
+    #if Rails.env.production?
       callback_url = "http://stark-robot-3518.herokuapp.com/auth/#{app_name}/create"
-    elsif Rails.env.development?
-      callback_url = "http://localhost:3000/auth/#{app_name}/create"
-    end
+    #elsif Rails.env.development?
+    #  callback_url = "http://localhost:3000/auth/#{app_name}/create"
+    #end
   end
 
   def get_app_url
