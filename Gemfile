@@ -18,6 +18,9 @@ gem 'heroku'
 #gem 'pg'
 #gem 'taps'
 gem 'will_paginate', '~> 3.0'
+gem 'execjs'
+
+
 
 group :development do
   gem 'mysql'
