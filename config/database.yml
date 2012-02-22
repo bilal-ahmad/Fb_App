@@ -5,7 +5,7 @@ development:
   adapter: mysql
   database: facebook_app
   username: root
-  password:
+  password: artex
   #socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
@@ -16,11 +16,11 @@ test:
   adapter: mysql
   database: facebook_app
   username: root
-  password:
+  password: artex
 
 production:
   #host: 127.0.0.1
   adapter:  postgresql
   database: facebook_app
   username: root
-  password:
+  password: artex
