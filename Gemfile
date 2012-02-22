@@ -15,7 +15,7 @@ gem 'koala'
 gem 'haml'
 gem 'carrierwave'
 gem 'heroku'
-gem 'pg'
+#gem 'pg'
 #gem 'taps'
 gem 'will_paginate', '~> 3.0'
 
@@ -24,7 +24,7 @@ group :development do
 end
 
 group :production do
-  gem "pg"
+  gem "mysql"
 end
 
 
