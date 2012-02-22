@@ -19,6 +19,7 @@ gem 'heroku'
 #gem 'taps'
 gem 'will_paginate', '~> 3.0'
 gem 'execjs'
+gem 'therubyracer', :platforms => :ruby
 
 
 
