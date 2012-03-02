@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   def get_oauth_url(app)
     if Rails.env.production?
-      "http://213.175.214.140/auth/#{app}"
+      "http://summacbook.info/auth/#{app}"
     elsif Rails.env.development?
       "http://localhost:3000/auth/#{app}"
     end
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   def get_callback_url(app_name)
     #if Rails.env.production?
-      callback_url = "http://213.175.214.140/auth/#{app_name}/create"
+      callback_url = "http://summacbook.info/auth/#{app_name}/create"
     #elsif Rails.env.development?
     #  callback_url = "http://localhost:3000/auth/#{app_name}/create"
     #end
