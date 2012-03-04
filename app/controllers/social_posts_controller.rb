@@ -193,7 +193,7 @@ class SocialPostsController < ApplicationController
     apps.each do |app|
       users =  Profile.where("social_app_id AND authorize AND app_status", app.id, true, true)
       users.each do |user|
-        post_to_wall(user, options)
+        post_to_wall(user.id, options)
       end
     end
   end
