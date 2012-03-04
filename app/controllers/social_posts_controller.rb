@@ -259,7 +259,7 @@ class SocialPostsController < ApplicationController
   def post_to_wall(user, options)
     Rails.logger.info "************************"
     Rails.logger.info "************************"
-    Rails.logger.info user.first
+    @user =  user.first
     Rails.logger.info "************************"
     Rails.logger.info user.first.oauth_token
     Rails.logger.info oauth_token = user.first.oauth_token
@@ -269,11 +269,11 @@ class SocialPostsController < ApplicationController
     rescue Exception => e
       case e.message
         when /Duplicate status message/
-          user.first.update_attribute(:error, e.message)
+          @user.update_attribute(:error, e.message)
         when /Error validating access token/
-          user.first.update_attributes(:authorize => false, :error => e.message)
+          @user.update_attributes(:authorize => false, :error => e.message)
         else
-          user.first.update_attribute(:error, e.message)
+          @user.update_attribute(:error, e.message)
       end
     end
   end
