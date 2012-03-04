@@ -34,7 +34,7 @@ class SocialPostsController < ApplicationController
     @apps = SocialApp.all
     @facebook_accounts = Profile.find_all_by_authorize true
     @social_post = SocialPost.new
-
+    flash[:notice]= params[:notice]
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @social_post }
@@ -61,7 +61,7 @@ class SocialPostsController < ApplicationController
           if params[:sap].present?
             post(params)
             @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-            format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
+            redirect_to new_social_post_path(:notice => 'Social post was successfully drafted.')
           end
           format.json { render json: @social_post, status: :created, location: @social_post }
         else
