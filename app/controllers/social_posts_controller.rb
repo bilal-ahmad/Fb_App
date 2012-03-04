@@ -261,19 +261,19 @@ class SocialPostsController < ApplicationController
     Rails.logger.info "************************"
     Rails.logger.info user.first
     Rails.logger.info "************************"
-    Rails.logger.info user.first.id
-    Rails.logger.info oauth_token = user[4]
+    Rails.logger.info user.first.oauth_token
+    Rails.logger.info oauth_token = user.first.oauth_token
     @graph = Koala::Facebook::API.new(oauth_token)
     begin
       @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
     rescue Exception => e
       case e.message
         when /Duplicate status message/
-          user.update_attribute(:error, e.message)
+          user.first.update_attribute(:error, e.message)
         when /Error validating access token/
-          user.update_attributes(:authorize => false, :error => e.message)
+          user.first.update_attributes(:authorize => false, :error => e.message)
         else
-          user.update_attribute(:error, e.message)
+          user.first.update_attribute(:error, e.message)
       end
     end
   end
