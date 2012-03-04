@@ -61,11 +61,11 @@ class SocialPostsController < ApplicationController
           if params[:sap].present?
             post(params)
             @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-            format.html { render action: "edit" , :notice => 'Social post was successfully drafted.' }
+            format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
           end
           format.json { render json: @social_post, status: :created, location: @social_post }
         else
-          format.html { render action: "edit" }
+          format.html { render action: "new" }
           format.json { render json: @social_post.errors, status: :unprocessable_entity }
         end
       else
@@ -248,7 +248,7 @@ class SocialPostsController < ApplicationController
           :picture => post.picture
       }
       users.each do |user|
-        post_to_wall(user, options)
+        post_to_wall(user.id, options)
       end
       render json: "true"
     end
