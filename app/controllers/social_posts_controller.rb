@@ -207,7 +207,7 @@ class SocialPostsController < ApplicationController
       elsif !user.nil? and user.count > 1
         users = user
         users.each do |user|
-          post_to_wall(user, options)
+          post_to_wall(user.id, options)
         end
       end
     end
@@ -256,12 +256,10 @@ class SocialPostsController < ApplicationController
   end
 
 
-  def post_to_wall(user, options)
-    @user = Profile.find_all_by_id(user.first.id).first
-    Rails.logger.info "***Nil=#{user.nil?}*********************"
-    Rails.logger.info "***token=#{user.first.oauth_token}*********************"
+  def post_to_wall(user_id, options)
+    @user = Profile.find_all_by_id(user_id).first
     Rails.logger.info "***@user['oauth_token']=#{@user['oauth_token']}*********************"
-    oauth_token = user.first.oauth_token
+    oauth_token = @user['oauth_token']
     @graph = Koala::Facebook::API.new(oauth_token)
     begin
       @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
