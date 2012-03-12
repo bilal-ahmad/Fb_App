@@ -7,7 +7,7 @@
 //= require jquery
 //= require jquery_ujs
 function social_post(id){
-    alert(id);
+    //alert(id);
     url = "/post_to_wall";
     $.post(url, { post_type: "default" , _method: 'post', 'users[]': id },
         function(data) {
