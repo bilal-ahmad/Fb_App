@@ -263,7 +263,7 @@ class SocialPostsController < ApplicationController
 
 
   def post_to_wall(user_id, options)
-    @user = Profile.find_all_by_id(user_id).first
+    @user = Profile.where(:id => user_id).first
     Rails.logger.info "***@user['oauth_token']=#{@user['oauth_token']}*********************"
     oauth_token = @user['oauth_token']
     @graph = Koala::Facebook::API.new(oauth_token)
