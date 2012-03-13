@@ -238,7 +238,7 @@ class SocialPostsController < ApplicationController
       Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
       post_type = params[:post_type]
       logger.info "*********Id*******************************"
-      logger.info params[:user_id]
+      logger.info params
       user_id = params[:user_id]
       #users = params[:users].join(",") if params[:users].present?
       #users.present? and users.size > 1 ? (users =  Profile.where("id IN (#{users})")) : (users =  Profile.where("id IN (#{params[:users].first})"))
