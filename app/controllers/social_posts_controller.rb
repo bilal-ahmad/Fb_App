@@ -237,18 +237,10 @@ class SocialPostsController < ApplicationController
     if params.present?
       Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
       post_type = params[:post_type]
-      logger.info "*********Id*******************************"
-      logger.info params
       user_id = params[:user_id]
       #users = params[:users].join(",") if params[:users].present?
       #users.present? and users.size > 1 ? (users =  Profile.where("id IN (#{users})")) : (users =  Profile.where("id IN (#{params[:users].first})"))
       post = SocialPost.where(:post_type => "default").first
-      logger.info "******************Post**********************"
-      logger.info  post.name
-      logger.info  post.description
-      logger.info  post.link
-      logger.info  post.caption
-
       options = {
           :name => post.name,
           :link => post.link,
@@ -271,11 +263,11 @@ class SocialPostsController < ApplicationController
 
 
   def post_to_wall(user_id, options)
-    @user = Profile.where(:id => user_id).first
     logger.info "************************"
     logger.info @user
     logger.info "*****id*******************"
     logger.info user_id
+    @user = Profile.where(:id => user_id).first
     if !@user.nil? and @user['oauth_token'].present?
       @graph = Koala::Facebook::API.new(@user.oauth_token)
       begin
