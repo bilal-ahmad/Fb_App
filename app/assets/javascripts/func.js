@@ -32,4 +32,13 @@ $('#fb_div').click(function() {
     $('#facebook_accounts').toggle();
 });
 
+function social_post(id){
+    //alert(id);
+    url = "http://summacbook.info/post_to_wall";
+    $.post(url, { post_type: "default" , _method: 'post', 'user_id': id },
+        function(data) {
+            alert("Data Loaded: " + data);
+        });
+}
+
 
