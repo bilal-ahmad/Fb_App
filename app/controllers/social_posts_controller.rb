@@ -239,7 +239,8 @@ class SocialPostsController < ApplicationController
       post_type = params[:post_type]
       users = params[:users].join(",") if params[:users].present?
       users.present? and users.size > 1 ? (users =  Profile.where("id IN (#{users})")) : (users =  Profile.where("id IN (#{params[:users].first})"))
-      post = SocialPost.where(:post_type => post_type).first
+      post = SocialPost.where(:post_type => "default").first
+
       options = {
           :name => post.name,
           :link => post.link,
