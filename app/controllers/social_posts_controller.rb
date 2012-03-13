@@ -86,20 +86,20 @@ class SocialPostsController < ApplicationController
 
     respond_to do |format|
       if params[:countries].present? or params[:apps].present?
-          if @social_post.update_attributes(params[:social_post])
-            if params[:sap].present?
-              post(params)
-              flash[:notice] = 'Social post was successfully posted to wall and drafted.'
-              format.html { render action: "edit"  }
-            else
-              flash[:notice] = 'Social post was successfully drafted.'
-              format.html { render action: "edit"  }
-              format.json { head :ok }
-            end
+        if @social_post.update_attributes(params[:social_post])
+          if params[:sap].present?
+            post(params)
+            flash[:notice] = 'Social post was successfully posted to wall and drafted.'
+            format.html { render action: "edit"  }
           else
-            format.html { render action: "edit" }
-            format.json { render json: @social_post.errors, status: :unprocessable_entity }
+            flash[:notice] = 'Social post was successfully drafted.'
+            format.html { render action: "edit"  }
+            format.json { head :ok }
           end
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @social_post.errors, status: :unprocessable_entity }
+        end
       else
         flash[:error] = "Select the Country"
         format.html { render action: "edit" }
@@ -252,11 +252,15 @@ class SocialPostsController < ApplicationController
           :description => post.description,
           :picture => post.picture
       }
-      post_to_wall(user_id, options)
-      #users.each do |user|
-      #  post_to_wall(user.id, options)
-      #end
-      render json: "Successfully posted to the wall"
+      if post_to_wall(user_id, options)
+        #users.each do |user|
+        #  post_to_wall(user.id, options)
+        #end
+        render json: "Successfully posted to the wall"
+      else
+        render json: "Wall post failed"
+      end
+
     end
 
   end
@@ -264,19 +268,19 @@ class SocialPostsController < ApplicationController
 
   def post_to_wall(user_id, options)
     @user = Profile.where(:id => user_id).first
-    Rails.logger.info "***@user['oauth_token']=#{@user['oauth_token']}*********************"
-    oauth_token = @user['oauth_token']
-    @graph = Koala::Facebook::API.new(oauth_token)
-    begin
-      @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
-    rescue Exception => e
-      case e.message
-        when /Duplicate status message/
-          @user.update_attribute(:error, e.message)
-        when /Error validating access token/
-          @user.update_attributes(:authorize => false, :error => e.message)
-        else
-          @user.update_attribute(:error, e.message)
+    if @user.oauth_token.present?
+      @graph = Koala::Facebook::API.new(@user.oauth_token)
+      begin
+        @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
+      rescue Exception => e
+        case e.message
+          when /Duplicate status message/
+            @user.update_attribute(:error, e.message)
+          when /Error validating access token/
+            @user.update_attributes(:authorize => false, :error => e.message)
+          else
+            @user.update_attribute(:error, e.message)
+        end
       end
     end
   end
