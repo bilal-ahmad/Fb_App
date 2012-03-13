@@ -237,8 +237,12 @@ class SocialPostsController < ApplicationController
     if params.present?
       Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
       post_type = params[:post_type]
-      users = params[:users].join(",") if params[:users].present?
-      users.present? and users.size > 1 ? (users =  Profile.where("id IN (#{users})")) : (users =  Profile.where("id IN (#{params[:users].first})"))
+      p "****************************************"
+      Rails.logger.info params[:user_id]
+      user_id = params[:user_id]
+      p "****************************************"
+      #users = params[:users].join(",") if params[:users].present?
+      #users.present? and users.size > 1 ? (users =  Profile.where("id IN (#{users})")) : (users =  Profile.where("id IN (#{params[:users].first})"))
       post = SocialPost.where(:post_type => "default").first
 
       options = {
@@ -248,10 +252,11 @@ class SocialPostsController < ApplicationController
           :description => post.description,
           :picture => post.picture
       }
-      users.each do |user|
-        post_to_wall(user.id, options)
-      end
-      render json: "true"
+      post_to_wall(user_id, options)
+      #users.each do |user|
+      #  post_to_wall(user.id, options)
+      #end
+      render json: "Successfully posted to the wall"
     end
 
   end

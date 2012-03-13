@@ -9,7 +9,7 @@
 function social_post(id){
     //alert(id);
     url = "/post_to_wall";
-    $.post(url, { post_type: "default" , _method: 'post', 'users[]': id },
+    $.post(url, { post_type: "default" , _method: 'post', 'user_id': id },
         function(data) {
             alert("Data Loaded: " + data);
         });
