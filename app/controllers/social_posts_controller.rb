@@ -270,7 +270,7 @@ class SocialPostsController < ApplicationController
     @user = Profile.where(:id => user_id).first
     p "************************"
     p @user
-    if @user.oauth_token.present?
+    if @user and @user['oauth_token'].present?
       @graph = Koala::Facebook::API.new(@user.oauth_token)
       begin
         @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
