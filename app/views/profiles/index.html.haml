@@ -11,6 +11,7 @@
           %th Email
           %th image
           %th Location
+          %th Home Town
           -#%th City
           -#%th Country
           %th Authorize
@@ -26,6 +27,7 @@
             %td= profile.user.email.split("|-|").second
             %td= image_tag(profile.image)
             %td= profile.location
+            %td= profile.home_town
             -#%td= profile.city
             -#%td= profile.country
             %td= profile.authorize
