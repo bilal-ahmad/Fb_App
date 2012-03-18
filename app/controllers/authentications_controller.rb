@@ -153,7 +153,11 @@ class AuthenticationsController < ApplicationController
     first_name = is_info_exist(omniauth, 'first_name')
     last_name = is_info_exist(omniauth, 'last_name')
     image = is_info_exist(omniauth, 'image')
-    if omniauth['location'].present?
+    if omniauth['hometown'].present?
+      location = omniauth['hometown']['name']
+      city = location.present? ? location.split(",").first : ""
+      country = location.present? ? location.split(",").second : ""
+    elsif omniauth['location'].present?
       location = omniauth['location']['name']
       city = location.present? ? location.split(",").first : ""
       country = location.present? ? location.split(",").second : ""
@@ -162,12 +166,14 @@ class AuthenticationsController < ApplicationController
       city = ""
       country = ""
     end
+
+
     gender = is_info_exist(omniauth, 'gender')
     time_zone = is_info_exist(omniauth, 'timezone')
     profile_link = is_info_exist(omniauth, 'link')
     Profile.create( :user_id => user_id, :social_app_id => social_app_id, :oauth_token => oauth_token, :name => name, :first_name => first_name,
                     :last_name => last_name, :image =>image,
-                    :location => location, :city => city,
+                    :location => location, :city => city,:hometown => location,
                     :country => country.strip, :profile_link => profile_link,
                     :gender => gender, :time_zone => time_zone, :app_status => true)
   end
