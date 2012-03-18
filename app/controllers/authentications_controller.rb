@@ -155,26 +155,27 @@ class AuthenticationsController < ApplicationController
     image = is_info_exist(omniauth, 'image')
     if omniauth['hometown'].present?
       location = omniauth['hometown']['name']
-      city = location.present? ? location.split(",").first : ""
-      country = location.present? ? location.split(",").second : ""
+      results = Geocoder.search(location)
+      country = results[0].data['address_components'].last.first.second
+      city = results[0].data['address_components'].first.first.second
     elsif omniauth['location'].present?
       location = omniauth['location']['name']
-      city = location.present? ? location.split(",").first : ""
-      country = location.present? ? location.split(",").second : ""
+      results = Geocoder.search(location)
+      country = results[0].data['address_components'].last.first.second
+      city = results[0].data['address_components'].first.first.second
     else
       location = ""
       city = ""
       country = ""
     end
 
-
     gender = is_info_exist(omniauth, 'gender')
     time_zone = is_info_exist(omniauth, 'timezone')
     profile_link = is_info_exist(omniauth, 'link')
     Profile.create( :user_id => user_id, :social_app_id => social_app_id, :oauth_token => oauth_token, :name => name, :first_name => first_name,
                     :last_name => last_name, :image =>image,
-                    :location => location, :city => city,:home_town => location,
-                    :country => country.strip, :profile_link => profile_link,
+                    :location => location, :home_town => location, :city => city,
+                    :country => country, :profile_link => profile_link,
                     :gender => gender, :time_zone => time_zone, :app_status => true)
   end
 
