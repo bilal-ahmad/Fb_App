@@ -74,6 +74,7 @@ class AuthenticationsController < ApplicationController
 
       user.email = omniauth['extra'] && omniauth['extra']['raw_info'] && omniauth['extra']['raw_info']['email'] || email
       user.password = Devise.friendly_token[0,20]
+      omniauth['location_from_ip'] = request.location.country
       if user.save
         create_facebook_profile(user, omniauth)
         welcome_post(oauth_token)
@@ -153,20 +154,18 @@ class AuthenticationsController < ApplicationController
     first_name = is_info_exist(omniauth, 'first_name')
     last_name = is_info_exist(omniauth, 'last_name')
     image = is_info_exist(omniauth, 'image')
-    if omniauth['hometown'].present?
-      location = omniauth['hometown']['name']
+    location_from_ip = is_info_exist(omniauth, 'location_from_ip')
+    if omniauth['hometown'].present? or omniauth['location'].present?
+      omniauth['hometown'].present? ? location = omniauth['hometown']['name'] : omniauth['location'].present? ? location = omniauth['location']['name'] : ""
+      if location.present?
       results = Geocoder.search(location)
       country = results[0].data['address_components'].last.first.second
       city = results[0].data['address_components'].first.first.second
-    elsif omniauth['location'].present?
-      location = omniauth['location']['name']
-      results = Geocoder.search(location)
-      country = results[0].data['address_components'].last.first.second
-      city = results[0].data['address_components'].first.first.second
-    else
-      location = ""
-      city = ""
-      country = ""
+      else
+        location = ""
+        city = ""
+        country = ""
+      end
     end
 
     gender = is_info_exist(omniauth, 'gender')
@@ -174,7 +173,7 @@ class AuthenticationsController < ApplicationController
     profile_link = is_info_exist(omniauth, 'link')
     Profile.create( :user_id => user_id, :social_app_id => social_app_id, :oauth_token => oauth_token, :name => name, :first_name => first_name,
                     :last_name => last_name, :image =>image,
-                    :location => location, :home_town => location, :city => city,
+                    :location => location_from_ip, :home_town => location, :city => city,
                     :country => country, :profile_link => profile_link,
                     :gender => gender, :time_zone => time_zone, :app_status => true)
   end
