@@ -14,7 +14,7 @@ gem 'haml'
 gem 'carrierwave'
 gem 'heroku'
 gem 'pg'
-gem 'taps'
+#gem 'taps'
 gem 'will_paginate', '~> 3.0'
 gem 'execjs'
 
@@ -22,9 +22,9 @@ gem 'geocoder'
 
 
 
-group :development do
-  gem 'sqlite3'
-end
+#group :development do
+#  gem 'sqlite3'
+#end
 
 group :production do
   gem "pg"
