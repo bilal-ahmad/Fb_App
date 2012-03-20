@@ -25,11 +25,11 @@ gem 'geocoder'
 
 
 group :development do
-  gem 'mysql'
+#  gem 'mysql'
 end
 
 group :production do
-  gem "mysql"
+#  gem "pg"
 end
 
 
