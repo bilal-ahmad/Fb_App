@@ -105,7 +105,7 @@ FacebookApp::Application.routes.draw do
   match '/edit_default_post' => 'social_posts#edit_default_post', :as => :edit_default_post
   match '/update_welcome_post' => 'social_posts#update_welcome_post', :as => :update_welcome_post
   match '/update_default_post' => 'social_posts#update_default_post', :as => :update_default_post
-  match '/post' => 'social_posts#post'
+  match '/post' => 'social_posts#post', :as => :post
   match 'validate_user' => 'home#validate_user', :as => :validate_user
   match 'post_to_wall' => 'social_posts#ajax_post', :as => :post_to_wall
   match '/activate_event/:id' => 'events#activate_event', :as => :activate_event

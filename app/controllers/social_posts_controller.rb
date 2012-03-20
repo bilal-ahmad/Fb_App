@@ -19,7 +19,12 @@ class SocialPostsController < ApplicationController
   # GET /social_posts/1
   # GET /social_posts/1.json
   def show
+    flash[:notice] = params[:notice] if params[:notice]
+    flash[:error] = params[:error] if params[:error]
     @social_post = SocialPost.find(params[:id])
+    @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
+    @apps = SocialApp.all
+
 
     respond_to do |format|
       format.html # show.html.erb
@@ -56,21 +61,12 @@ class SocialPostsController < ApplicationController
     @facebook_accounts = Profile.find_all_by_authorize true
 
     respond_to do |format|
-      if params[:countries].present? or params[:apps].present?
-        if @social_post.save
-          if params[:sap].present?
-            post(params)
-            @countries = SocialPost.find_by_sql("SELECT name FROM countries WHERE active = true")
-            format.html { render action: "new" , :notice => 'Social post was successfully drafted.' }
-          end
-          format.json { render json: @social_post, status: :created, location: @social_post }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @social_post.errors, status: :unprocessable_entity }
-        end
+      if @social_post.save
+        format.html { redirect_to @social_post, notice: 'Social post was successfully created.' }
+        format.json { render json: @social_post, status: :created, location: @social_post }
       else
-        flash[:error] = "Select the country or Facebook Account"
         format.html { render action: "new" }
+        format.json { render json: @social_post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -174,29 +170,62 @@ class SocialPostsController < ApplicationController
 
 
 
-  def post(params)
-    Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
-    options = {
-        :name => params[:social_post][:name],
-        :link => params[:social_post][:link],
-        :caption => params[:social_post][:caption],
-        :description => params[:social_post][:description],
-        :picture => params[:social_post][:picture]
-    }
-    post_by_countries(params[:countries], options) if params[:countries].present?
-    post_by_app(params[:apps].join(","), options)
-
+  def post
+    if params[:apps].present? and params[:countries].present?
+      Koala.http_service.http_options = {:ssl => { :ca_file => Rails.root.join('lib/assets/cacert.pem').to_s }}
+      post = SocialPost.where(:id => params[:social_post]['id']).first
+      options = {
+          :name => post.name,
+          :link => post.link,
+          :caption => post.caption,
+          :description => post.description,
+          :picture => post.picture,
+          :countries => params[:countries],
+          :limit => params[:limit]
+      }
+      post_by_app(params[:apps].join(","), options)
+    else
+      redirect_to social_post_path(params[:social_post]['id'], :notice => "Select an Facebook App or Country")
+    end
   end
 
   def post_by_app(apps, options)
     apps = SocialApp.where("id IN (?)", apps)
+    options[:countries] == "all" ? country = "all" : country = options[:countries].join(",")
     apps.each do |app|
-      users =  Profile.where("social_app_id AND authorize AND app_status", app.id, true, true)
-      users.each do |user|
+      if country == "all"
+        users =  Profile.where("social_app_id AND authorize AND app_status", app.id, true, true).limit(options[:limit])
+      else
+        users =  Profile.where("social_app_id AND authorize AND app_status AND country IN ('#{country}')", app.id, true, true ).limit(options[:limit])
+      end
+       users.each do |user|
         post_to_wall(user.id, options)
       end
     end
+    redirect_to social_posts_path
+
   end
+
+  def post_to_wall(user_id, options)
+    @user = Profile.where(:id => user_id).first
+    if !@user.nil? and @user['oauth_token'].present?
+      @graph = Koala::Facebook::API.new(@user.oauth_token)
+      begin
+        res = @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
+        res
+      rescue Exception => e
+        case e.message
+          when /Duplicate status message/
+            @user.update_attribute(:error, e.message)
+          when /Error validating access token/
+            @user.update_attributes(:authorize => false, :error => e.message)
+          else
+            @user.update_attribute(:error, e.message)
+        end
+      end
+    end
+  end
+
 
   def post_by_countries(countries, options)
     countries = (countries.present? and countries == "all") ? "all" : countries
@@ -262,23 +291,5 @@ class SocialPostsController < ApplicationController
   end
 
 
-  def post_to_wall(user_id, options)
-    @user = Profile.where(:id => user_id).first
-    if !@user.nil? and @user['oauth_token'].present?
-      @graph = Koala::Facebook::API.new(@user.oauth_token)
-      begin
-        @graph.put_wall_post( options[:description], {:name => options[:name], :link => options[:link], :caption => options[:caption],  :picture => options[:picture]})
-      rescue Exception => e
-        case e.message
-          when /Duplicate status message/
-            @user.update_attribute(:error, e.message)
-          when /Error validating access token/
-            @user.update_attributes(:authorize => false, :error => e.message)
-          else
-            @user.update_attribute(:error, e.message)
-        end
-      end
-    end
-  end
 
 end

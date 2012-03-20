@@ -1,63 +1,79 @@
 .page
   #primary
     .text
-      %h1 Post
-      %br/
-      = link_to 'Edit', edit_social_post_path(@social_post)
-      = link_to '| Show All', social_posts_path
-      %table.show_table
-        - if @social_post.name
-          %tr
-            %td.title Name
-            %td= @social_post.name
+      %fieldset.col-3
+        %legend
+          %h1 Post
+          %br/
+          = link_to 'Create Post', new_social_post_path
+          = link_to '| Edit', edit_social_post_path(@social_post)
+          = link_to '| Show All', social_posts_path
+          = form_for(@social_post, :url => post_path) do |f|
+            = f.hidden_field :id, :value => @social_post.id
+            %ul.no_border
+              = flash_messages
+              = error_messages(@social_post)
+              %li.col-span-2
+                %label.input-text
+                  %span.label.hd Select Application
+              %ul.permissions
+                - @apps.each do |app|
+                  %li
+                    %label
+                      = check_box_tag "apps[]", "#{app.id}", false
+                      %span.remember_me
+                        =app.name
+              %li.col-span-2
+                %label.input-text
+                  %span.label.hd Select Country
+              %ul.permissions
+                - @countries.each do |country|
+                  %li
+                    %label
+                      = check_box_tag "countries[]", "#{country.name}", false
+                      %span.remember_me
+                        =country.name
+                %li
+                  %label
+                    = check_box_tag "countries[]", "all", false
+                    %span.remember_me All
+              %li.col-span-2
+                %label.input-text
+                  %span.label.hd Set Limit
+              %ul.permissions
+                %li
+                  %label
+                    =select_tag("limit", options_for_select([['10', 10], ['15', 15], ['20', 20]]), :style =>"width:70px;")
+                %li.col-span-2.clear
+              %label.input-text
+                %span.label.hd Post
+              %ul.posts
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Name
+                    = @social_post.name
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Link
+                    = @social_post.link
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Picture
+                    = @social_post.picture
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Caption
+                    = @social_post.caption
+                %li.col-span-2
+                  %label.input-text
+                    %span.label Description
+                    = @social_post.description
+            %p.buttons{:style => "margin-top:0px;"}
+              %button.primary-call{:type => "submit", :name => "sap", :value => "sap"} Save and Post
+              %button.primary-call{:type => "submit", :name => "sad", :value => "sad"} Save as Draft
+              = link_to 'Back', social_apps_path
 
-        - if @social_post.link
-          %tr
-            %td.title Link
-            %td= @social_post.link
 
-        - if @social_post.picture
-          %tr
-            %td.title Picture
-            %td= @social_post.picture
 
-        - if @social_post.caption
-          %tr
-            %td.title Caption
-            %td= @social_post.caption
-
-        - if @social_post.description
-          %tr
-            %td.title Description
-            %td= @social_post.description
-
-        - if @social_post.message
-          %tr
-            %td.title Message
-            %td= @social_post.message
-        - if @social_post.wall_post
-          %tr
-            %td.title Wall Post Enable
-            %td= @social_post.wall_post
-
-        - if @social_post.status_update
-          %tr
-            %td.title Welcome Status Update
-            %td= @social_post.status_update
-
-        - if @social_post.chatt_message
-          %tr
-            %td.title Chatt Message
-            %td= @social_post.chatt_message
-
-        - if @social_post.photo_message
-          %tr
-            %td.title Photo Message
-            %td= @social_post.photo_message
-
-        - if @social_post.photo_path
-          %tr
-            %td.title Photo Path
-            %td= @social_post.photo_path
 
 

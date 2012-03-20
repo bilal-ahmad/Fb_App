@@ -15,12 +15,12 @@ gem 'koala'
 gem 'haml'
 gem 'carrierwave'
 gem 'heroku'
-#gem 'pg'
-#gem 'taps'
+gem 'pg'
+gem 'taps'
 gem 'will_paginate', '~> 3.0'
 gem 'execjs'
-gem 'uglifier'
 
+gem 'geocoder'
 
 
 
