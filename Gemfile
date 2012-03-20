@@ -23,11 +23,11 @@ gem 'geocoder'
 
 
 group :development do
-#  gem 'mysql'
+  gem 'sqlite3'
 end
 
 group :production do
-#  gem "pg"
+  gem "pg"
 end
 
 
